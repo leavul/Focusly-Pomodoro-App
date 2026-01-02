@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { ActionButtons, Mode, ModeSwitcher, StatusDisplay } from '../components/pomodoro'
-import TimeDisplay from '../components/pomodoro/TimeDisplay'
+import { Mode, ModeSwitcher, TimeDisplay, StatusDisplay, ActionButtons } from '../components/pomodoro'
 
 const HomeScreen = () => {
     const [mode, setMode] = useState<Mode>("work");
