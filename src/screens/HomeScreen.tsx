@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { Mode, ModeSwitcher, TimeDisplay, StatusDisplay, ActionButtons } from '../components/pomodoro'
 
 const HomeScreen = () => {
-    const [mode, setMode] = useState<Mode>("work");
+    const [mode, setMode] = useState<Mode>('work');
 
     return (
         // Switch mode buttons

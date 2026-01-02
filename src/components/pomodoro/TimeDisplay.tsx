@@ -9,7 +9,7 @@ type TimeDisplayProps = {
 };
 
 const TimeDisplay = ({ time }: TimeDisplayProps) => {
-  return <AppText style={styles.timerText} variant="timer">{time}</AppText>;
+  return <AppText style={styles.timerText} variant='timer'>{time}</AppText>;
 };
 
 export default TimeDisplay;

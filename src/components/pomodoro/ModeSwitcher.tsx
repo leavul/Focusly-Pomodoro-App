@@ -15,24 +15,24 @@ const ModeSwitcher = ({ mode, onChange }: ModeSwitcherProps) => {
         <View style={styles.container}>
             {/* Work mode */}
             <Pressable
-                style={[styles.modeButton, mode === "work" && styles.active]}
-                onPress={() => onChange("work")}
+                style={[styles.modeButton, mode === 'work' && styles.active]}
+                onPress={() => onChange('work')}
             >
                 <AppText>Work</AppText>
             </Pressable>
 
             {/* Break mode */}
             <Pressable
-                style={[styles.modeButton, mode === "break" && styles.active]}
-                onPress={() => onChange("break")}
+                style={[styles.modeButton, mode === 'break' && styles.active]}
+                onPress={() => onChange('break')}
             >
                 <AppText>Break</AppText>
             </Pressable>
 
             {/* Long break mode */}
             <Pressable
-                style={[styles.modeButton, mode === "longBreak" && styles.active]}
-                onPress={() => onChange("longBreak")}
+                style={[styles.modeButton, mode === 'longBreak' && styles.active]}
+                onPress={() => onChange('longBreak')}
             >
                 <AppText>Long Break</AppText>
             </Pressable>
