@@ -3,7 +3,7 @@ import { SvgIconProps } from "./types";
 import { Path } from "react-native-svg";
 
 
-const ResumeIcon = (props: SvgIconProps) => {
+const ResetIcon = (props: SvgIconProps) => {
     return (
         <SvgIconWrapper
             viewBox="-24 0 512 512"
@@ -14,4 +14,4 @@ const ResumeIcon = (props: SvgIconProps) => {
     )
 };
 
-export default ResumeIcon;
+export default ResetIcon;

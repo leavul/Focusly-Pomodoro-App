@@ -1,6 +1,5 @@
-import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native'
-import { ReactNode } from 'react'
-import { s, vs } from 'react-native-size-matters'
+import { ColorValue, StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native'
+import { s } from 'react-native-size-matters'
 import { colors, radius } from '../../theme'
 
 type AppButtonType = TouchableOpacityProps & {
@@ -9,15 +8,15 @@ type AppButtonType = TouchableOpacityProps & {
     enableBorderWidth?: boolean
 }
 
-const AppButton = ({ padding = 16, backgroundColor, enableBorderWidth = true, style, children, ...props }: AppButtonType) => {
+const AppButton = ({ padding = 16, disabled = false, backgroundColor, enableBorderWidth = true, style, children, ...props }: AppButtonType) => {
     return (
         <TouchableOpacity
-            onPress={() => { }}
             style={[
                 styles.container,
                 {
                     padding: s(padding),
                     backgroundColor,
+                    opacity: disabled ? 0.5 : undefined,
                 },
                 enableBorderWidth &&
                 {
@@ -27,10 +26,11 @@ const AppButton = ({ padding = 16, backgroundColor, enableBorderWidth = true, st
                 style
 
             ]}
+            disabled={disabled}
             {...props}
         >
             {children}
-        </TouchableOpacity>
+        </TouchableOpacity >
     )
 }
 

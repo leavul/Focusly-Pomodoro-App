@@ -1,1 +1,1 @@
-export type Mode = "work" | "break" | "longBreak";
+export type Mode = "work" | "shortBreak" | "longBreak";

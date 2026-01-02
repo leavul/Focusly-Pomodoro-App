@@ -21,12 +21,12 @@ const ModeSwitcher = ({ mode, onChange }: ModeSwitcherProps) => {
                 <AppText>Work</AppText>
             </Pressable>
 
-            {/* Break mode */}
+            {/* Short break mode */}
             <Pressable
-                style={[styles.modeButton, mode === 'break' && styles.active]}
-                onPress={() => onChange('break')}
+                style={[styles.modeButton, mode === 'shortBreak' && styles.active]}
+                onPress={() => onChange('shortBreak')}
             >
-                <AppText>Break</AppText>
+                <AppText>Short Break</AppText>
             </Pressable>
 
             {/* Long break mode */}
@@ -45,10 +45,11 @@ export default ModeSwitcher
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: colors.muted,
         padding: s(spacing.sm),
         borderRadius: s(radius.full),
-        gap: s(spacing.sm)
     },
     modeButton: {
         paddingVertical: vs(spacing.sm),
