@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import AppText from '../components/ui/AppText'
-import { s, vs } from 'react-native-size-matters'
-import { colors, spacing } from '../theme'
-import { ActionButtons, Mode, ModeSwitcher } from '../components/pomodoro'
+import { ActionButtons, Mode, ModeSwitcher, StatusDisplay } from '../components/pomodoro'
+import TimeDisplay from '../components/pomodoro/TimeDisplay'
 
 const HomeScreen = () => {
     const [mode, setMode] = useState<Mode>("work");
-    
+
     return (
         // Switch mode buttons
         <View style={styles.container}>
@@ -16,20 +14,10 @@ const HomeScreen = () => {
             />
 
             {/* Time */}
-            <AppText
-                style={styles.timerText}
-                variant='timer'
-            >
-                25 : 00
-            </AppText>
+            <TimeDisplay time="25 : 00" />
 
             {/* Status */}
-            <AppText
-                style={styles.statusText}
-                color={colors.red}
-            >
-                P A U S E D
-            </AppText>
+            <StatusDisplay status="P A U S E D" />
 
             {/* Resume, Play and Skip buttons */}
             <ActionButtons />
@@ -44,11 +32,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    timerText: {
-        marginTop: vs(spacing.xl),
-    },
-    statusText: {
-        marginTop: vs(spacing.md)
     },
 })
