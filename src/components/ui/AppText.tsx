@@ -14,12 +14,14 @@ const AppText = ({ variant = 'body', style, color, children, ...props }: AppText
 
     return (
         <Text
-            style={[{
-                fontFamily,
-                color: color ?? colors.primary
-            },
-            typography[variant],
+            style={[
                 style,
+                {
+                    fontFamily,
+                    color: color ?? colors.primary
+                },
+
+                typography[variant],
             ]}
             {...props}
         >

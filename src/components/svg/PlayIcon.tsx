@@ -2,7 +2,6 @@ import SvgIconWrapper from "./SvgIconWrapper";
 import { SvgIconProps } from "./types";
 import { Path } from "react-native-svg";
 
-
 const PlayIcon = (props: SvgIconProps) => {
     return (
         <SvgIconWrapper

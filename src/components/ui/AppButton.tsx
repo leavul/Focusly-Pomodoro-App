@@ -9,7 +9,7 @@ type AppButtonType = TouchableOpacityProps & {
     enableBorderWidth?: boolean
 }
 
-const AppButton = ({ padding = 14, backgroundColor, enableBorderWidth = true, style, children, ...props }: AppButtonType) => {
+const AppButton = ({ padding = 16, backgroundColor, enableBorderWidth = true, style, children, ...props }: AppButtonType) => {
     return (
         <TouchableOpacity
             onPress={() => { }}

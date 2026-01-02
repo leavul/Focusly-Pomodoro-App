@@ -1,14 +1,43 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet, View } from 'react-native'
 import AppText from '../components/ui/AppText'
 import { s, vs } from 'react-native-size-matters'
-import { colors, spacing } from '../theme'
+import { colors, radius, spacing } from '../theme'
 import AppButton from '../components/ui/AppButton'
 import { PlayIcon, ResumeIcon, SkipIcon } from '../components/svg'
 
+type Mode = "work" | "break" | "longBreak";
 const HomeScreen = () => {
+
+    const [mode, setMode] = useState<Mode>("work");
     return (
+        // Switch mode buttons
         <View style={styles.container}>
+            <View style={styles.modeContainer}>
+                {/* Work mode */}
+                <Pressable
+                    style={[styles.modeButton, mode === "work" && styles.active]}
+                    onPress={() => setMode("work")}
+                >
+                    <AppText>Work</AppText>
+                </Pressable>
+
+                {/* Break mode */}
+                <Pressable
+                    style={[styles.modeButton, mode === "break" && styles.active]}
+                    onPress={() => setMode("break")}
+                >
+                    <AppText>Break</AppText>
+                </Pressable>
+
+                {/* Long break mode */}
+                <Pressable
+                    style={[styles.modeButton, mode === "longBreak" && styles.active]}
+                    onPress={() => setMode("longBreak")}
+                >
+                    <AppText>Long Break</AppText>
+                </Pressable>
+            </View>
             <AppText
                 style={styles.timerText}
                 variant='timer'
@@ -60,8 +89,23 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    modeContainer: {
+        flexDirection: 'row',
+        backgroundColor: colors.muted,
+        padding: s(spacing.sm),
+        borderRadius: s(radius.full),
+        gap: s(spacing.sm)
+    },
+    modeButton: {
+        paddingVertical: vs(spacing.sm),
+        paddingHorizontal: s(spacing.md),
+        borderRadius: s(radius.full),
+    },
+    active: {
+        backgroundColor: colors.surface,
+    },
     timerText: {
-        fontSize: 56,
+        marginTop: vs(spacing.xl),
     },
     statusText: {
         marginTop: vs(spacing.md)
