@@ -12,7 +12,7 @@ const typography: Typography = {
     fontWeight: '700',
   },
   body: {
-    fontSize: s(16),
+    fontSize: s(14),
     fontWeight: '400',
   },
 };

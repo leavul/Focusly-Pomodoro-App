@@ -28,7 +28,7 @@ const AppBootstrap = ({ children }: AppBootstrapProps) => {
     return (
         !isReady ? (
             <View style={styles.container}>
-                <ActivityIndicator size="large" color={colors.primary} />
+                <ActivityIndicator size="large" color={colors.secondary} />
             </View>
         ) : (
             <>{children}</>

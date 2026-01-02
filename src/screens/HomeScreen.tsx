@@ -90,11 +90,7 @@ const HomeScreen = () => {
             <TimeDisplay time={formatTime(timeLeft)} />
 
             {/* Timer status */}
-            <TimerStatusDisplay status={
-                timerIsRunning
-                    ? 'R U N N I N G'
-                    : 'P A S U E D'
-            } />
+            <TimerStatusDisplay timerIsRunning={timerIsRunning} />
 
             {/* Reset, Play/Pause and Skip buttons */}
             <ActionButtons

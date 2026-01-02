@@ -30,13 +30,13 @@ const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressPlay
             <AppButton
                 padding={34}
                 enableBorderWidth={false}
-                backgroundColor={colors.surface}
+                backgroundColor={colors.primary}
                 onPress={onPressPlayPauseToggle}
             >
                 {
                     timerIsRunning
-                        ? <PauseIcon size={28} />
-                        : <PlayIcon size={28} />
+                        ? <PauseIcon size={24} />
+                        : <PlayIcon size={24} />
                 }
             </AppButton>
 

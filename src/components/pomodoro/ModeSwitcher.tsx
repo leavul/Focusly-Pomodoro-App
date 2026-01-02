@@ -57,6 +57,6 @@ const styles = StyleSheet.create({
         borderRadius: s(radius.full),
     },
     active: {
-        backgroundColor: colors.surface,
+        backgroundColor: colors.primary,
     },
 })

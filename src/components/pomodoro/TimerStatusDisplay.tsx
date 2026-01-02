@@ -5,11 +5,23 @@ import { vs } from 'react-native-size-matters';
 import { spacing, colors } from '../../theme';
 
 type TimerStatusDisplayProps = {
-  status: string;
+  timerIsRunning: boolean;
 };
 
-const TimerStatusDisplay = ({ status }: TimerStatusDisplayProps) => {
-  return <AppText style={styles.statusText} color={colors.red}>{status}</AppText>;
+const TimerStatusDisplay = ({ timerIsRunning }: TimerStatusDisplayProps) => {
+  return <AppText
+    style={styles.statusText}
+    color={timerIsRunning
+      ? colors.green
+      : colors.red
+    }
+  >
+    {
+      timerIsRunning
+        ? 'R U N N I N G'
+        : 'P A S U E D'
+    }
+  </AppText>;
 };
 
 export default TimerStatusDisplay;

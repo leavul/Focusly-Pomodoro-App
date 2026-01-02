@@ -11,7 +11,7 @@ const SkipIcon = (props: SvgIconProps) => {
       {...props}
     >
       <Path
-        stroke={colors.primary}
+        stroke={colors.secondary}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}

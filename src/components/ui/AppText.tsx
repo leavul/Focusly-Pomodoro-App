@@ -1,5 +1,6 @@
 import { Text, TextProps } from 'react-native';
 import { colors, fonts, typography } from '../../theme';
+import { s } from 'react-native-size-matters';
 
 type AppTextProps = TextProps & {
     variant?: keyof (typeof typography);
@@ -18,10 +19,9 @@ const AppText = ({ variant = 'body', style, color, children, ...props }: AppText
                 style,
                 {
                     fontFamily,
-                    color: color ?? colors.primary
+                    color: color ?? colors.secondary
                 },
-
-                typography[variant],
+                typography[variant]
             ]}
             {...props}
         >

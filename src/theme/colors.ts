@@ -1,10 +1,12 @@
 const colors = {
-    background: '#FDFBF7', // App background
-    surface: '#F5E7D0',    // Start app button background
+    background: '#FDFBF7',
 
-    primary: '#463939ff',    // Primary color
-    muted: '#e0dbd2ff',      // Muted - secondary UI color (borders)
-    red: '#d15555ff',        // Status color
+    primary: '#F5E7D0',
+    secondary: '#463939ff',
+
+    muted: '#e0dbd2ff',
+    red: '#d15555ff',
+    green: '#5fb980ff'
 
 }
 
