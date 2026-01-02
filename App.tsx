@@ -8,7 +8,7 @@ import AppBootstrap from './src/components/bootstrap/AppBootstrap';
 export default function App() {
   return (
     <View style={styles.container}>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       <AppBootstrap>
         <HomeScreen />
       </AppBootstrap>

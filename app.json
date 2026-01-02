@@ -10,10 +10,15 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FDFBF7"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "icon": "assets/pomodoro.icon",
+      "bundleIdentifier": "com.albaraadighriri.unknown",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -21,13 +26,32 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.albaraadighriri.unknown"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "expo": {
+      "plugins": [
+        [
+          "expo-splash-screen",
+          {
+            "image": "./assets/splash-icon.png",
+            "backgroundColor": "#FDFBF7",
+            "imageWidth": 200
+          }
+        ]
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "250bc410-90b3-45dc-aa20-03533c3d1078"
+      }
+    },
+    "owner": "leavul"
   }
 }

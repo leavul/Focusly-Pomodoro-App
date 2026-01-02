@@ -10,11 +10,11 @@ type ActionButtonsProps = {
     timerIsRunning: boolean,
     disableReset: boolean
     onPressReset: () => void
-    onPressPlayPauseToggle: () => void
+    onPressTogglePlayPause: () => void
     onPressSkip: () => void
 }
 
-const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressPlayPauseToggle, onPressSkip }: ActionButtonsProps) => {
+const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressTogglePlayPause, onPressSkip }: ActionButtonsProps) => {
     return (
         <View style={styles.container}>
             {/* Reset button */}
@@ -31,7 +31,7 @@ const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressPlay
                 padding={34}
                 enableBorderWidth={false}
                 backgroundColor={colors.primary}
-                onPress={onPressPlayPauseToggle}
+                onPress={onPressTogglePlayPause}
             >
                 {
                     timerIsRunning

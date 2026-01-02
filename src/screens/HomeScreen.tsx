@@ -16,61 +16,81 @@ const HomeScreen = () => {
     // number of completed work sessions
     const [workCount, setWorkCount] = useState(0);
     // time left in seconds for current session
-    const [timeLeft, setTimeLeft] = useState(MODE_TIME['work']);
+    const [timeLeft, setTimeLeft] = useState<number | null>(null);
     // is the timer currently running?
     const [timerIsRunning, setTimerIsRunning] = useState(false);
+    // the exact timestamp when the current session should end
+    const [endTime, setEndTime] = useState<number | null>(null);
+
+    // handel change mode status
+    useEffect(() => {
+        setTimeLeft(MODE_TIME[mode])
+    }, [mode]);
 
     // handle timer countdown
     useEffect(() => {
         if (!timerIsRunning) return;
+
         const interval = setInterval(() => {
-            setTimeLeft(prev => {
-                if (prev <= 1) {
-                    // session finished
-                    handleSessionEnd();
-                    return 0;
-                }
-                return prev - 1;
-            });
+            const remaining = Math.round((endTime! - Date.now()) / 1000);
+
+            setTimeLeft(remaining);
+
+            if (remaining <= 0) {
+                handleSessionEnd()
+            } else {
+                setTimeLeft(remaining);
+            }
         }, 1000);
+
         return () => clearInterval(interval);
-    }, [timerIsRunning])
+    }, [timerIsRunning, endTime]);
 
-
-    // stop countdown and reset time left
-    const stopAndResetTimer = () => {
+    // stop countdown and recalculate new time left
+    const onReset = () => {
         setTimerIsRunning(false)
+        setEndTime(null)
         setTimeLeft(MODE_TIME[mode])
     };
 
+    // toggle play/pause button
+    const onTogglePlayPause = () => {
+        if (timerIsRunning) {
+            // stop timer
+            setTimerIsRunning(false);
+            setEndTime(null);
+        } else {
+            // start timer: calculate new endTime based on remaining time
+            setEndTime(Date.now() + timeLeft! * 1000);
+            setTimerIsRunning(true);
+        }
+    };
 
-    // reset when the mode changes
-    useEffect(() => {
-        stopAndResetTimer()
-    }, [mode]);
+    const onSkip = () => {
+        setTimeLeft(0)
+        setEndTime(null)
 
-    /*
-     called when a session (work or break) finishes 
-     
-     We calculate the next mode first and use it directly to set timeLeft.
-     We do NOT call resetTimeLeft() here because it uses the current `mode` state,
-     which may be outdated due to React state updates being asynchronous.
-     
-     Using the old `mode` would cause a race condition where timeLeft could be set
-     incorrectly for the next session. By using `nextMode` directly, we ensure
-     timeLeft matches the correct session immediately.
-     */
+        // NOTE:
+        // If you want to skip the session instantly (no 1s delay for the user),
+        // call handleSessionEnd() directly instead of waiting for the timer tick.
+    };
+
     const handleSessionEnd = () => {
+        setTimerIsRunning(false)
+
+        // If the finished session was a work session:
         if (mode === 'work') {
             const newWorkCount = workCount + 1;
             setWorkCount(newWorkCount);
+
+            // After 4 completed work sessions, switch to a long break.
+            // Otherwise, switch to a short break.
             const nextMode: Mode = newWorkCount % 4 === 0 ? 'longBreak' : 'shortBreak'
             setMode(nextMode)
-            setTimeLeft(MODE_TIME[nextMode])
         } else {
+            // If the finished session was a break, start a new work session
             setMode('work');
         }
-        setTimerIsRunning(false)
     }
 
     const formatTime = (seconds: number): string => {
@@ -87,7 +107,7 @@ const HomeScreen = () => {
             />
 
             {/* Time */}
-            <TimeDisplay time={formatTime(timeLeft)} />
+            <TimeDisplay time={formatTime(timeLeft!)} />
 
             {/* Timer status */}
             <TimerStatusDisplay timerIsRunning={timerIsRunning} />
@@ -96,9 +116,9 @@ const HomeScreen = () => {
             <ActionButtons
                 timerIsRunning={timerIsRunning}
                 disableReset={timeLeft === MODE_TIME[mode]}
-                onPressReset={stopAndResetTimer}
-                onPressPlayPauseToggle={() => setTimerIsRunning(prv => !prv)}
-                onPressSkip={() => setTimeLeft(0)}
+                onPressReset={onReset}
+                onPressTogglePlayPause={onTogglePlayPause}
+                onPressSkip={onSkip}
             />
         </View>
     )
