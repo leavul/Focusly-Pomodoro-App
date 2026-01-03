@@ -12,30 +12,36 @@ const MODE_DURATION: Record<Mode, number> = {
     longBreak: LONG_BREAK_TIME,
 };
 
-type PomodoroState = {
+type PomodoroStateType = {
     mode: Mode
     modeDuration: number
     timerIsOff: boolean
     timeRemaining: number
+    timeToEnd: number
     completedWorkSessions: number
 };
 
-const initialState: PomodoroState = {
+const initialState: PomodoroStateType = {
     mode: "work",
     modeDuration: MODE_DURATION['work'],
     timerIsOff: true,
     timeRemaining: MODE_DURATION['work'],
+    timeToEnd: 0,
     completedWorkSessions: 0
 };
 
 /**
  * Helper: apply mode and reset timer
  */
-const applyMode = (state: PomodoroState, mode: Mode) => {
+const applyMode = (state: PomodoroStateType, mode: Mode) => {
     state.mode = mode
     const duration = MODE_DURATION[mode]
     state.modeDuration = duration
     state.timeRemaining = duration
+}
+
+const calculateNewTimeToEnd = (state: PomodoroStateType) => {
+    return Date.now() + state.timeRemaining * 1000
 }
 
 const pomodoroSlice = createSlice({
@@ -44,11 +50,14 @@ const pomodoroSlice = createSlice({
     reducers: {
         setMode(state, action: PayloadAction<Mode>) {
             state.timerIsOff = true
+            state.timeToEnd = 0
             applyMode(state, action.payload)
         },
         tick(state) {
-            const timeRemaining = state.timeRemaining
-            if (timeRemaining <= 0) {
+            const remainingMs = state.timeToEnd - Date.now()
+            const remainingSec = Math.ceil(remainingMs / 1000)
+
+            if (remainingSec <= 0) {
                 state.timerIsOff = true
 
                 // If the finished session was a work session:
@@ -68,18 +77,21 @@ const pomodoroSlice = createSlice({
                     applyMode(state, "work")
                 }
             } else {
-                state.timeRemaining -= 1
+                state.timeRemaining = remainingSec
             }
         },
         resetSession(state) {
             state.timerIsOff = true
+            state.timeToEnd = 0
             state.timeRemaining = state.modeDuration
         },
         toggleTimer(state) {
             state.timerIsOff = !state.timerIsOff
+            state.timeToEnd = state.timerIsOff ? 0 : calculateNewTimeToEnd(state)
         },
         skipSession(state) {
             state.timeRemaining = 0
+            state.timeToEnd = 0
         }
     }
 });
