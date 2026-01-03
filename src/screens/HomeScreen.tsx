@@ -46,6 +46,11 @@ const HomeScreen = () => {
         return () => clearInterval(interval);
     }, [timerIsRunning, endTime]);
 
+    const onChangeMode = (newMode: Mode) => {
+        setTimerIsRunning(false)
+        setMode(newMode)
+    }
+
     // stop countdown and recalculate new time left
     const onReset = () => {
         setTimerIsRunning(false)
@@ -103,7 +108,7 @@ const HomeScreen = () => {
         // Switch mode buttons
         <View style={styles.container}>
             <ModeSwitcher mode={mode}
-                onChange={setMode}
+                onChange={onChangeMode}
             />
 
             {/* Time */}
