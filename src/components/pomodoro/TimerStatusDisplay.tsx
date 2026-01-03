@@ -5,21 +5,21 @@ import { vs } from 'react-native-size-matters';
 import { spacing, colors } from '../../theme';
 
 type TimerStatusDisplayProps = {
-  timerIsRunning: boolean;
+  timerIsOff: boolean;
 };
 
-const TimerStatusDisplay = ({ timerIsRunning }: TimerStatusDisplayProps) => {
+const TimerStatusDisplay = ({ timerIsOff }: TimerStatusDisplayProps) => {
   return <AppText
     style={styles.statusText}
-    color={timerIsRunning
-      ? colors.green
-      : colors.red
+    color={timerIsOff
+      ? colors.red
+      : colors.green
     }
   >
     {
-      timerIsRunning
-        ? 'R U N N I N G'
-        : 'P A S U E D'
+      timerIsOff
+        ? 'P A U S E D'
+        : 'R U N N I N G'
     }
   </AppText>;
 };

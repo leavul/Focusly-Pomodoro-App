@@ -7,14 +7,14 @@ import { s, vs } from 'react-native-size-matters'
 import PauseIcon from '../svg/PauseIcon'
 
 type ActionButtonsProps = {
-    timerIsRunning: boolean,
+    timerIsOff: boolean,
     disableReset: boolean
     onPressReset: () => void
     onPressTogglePlayPause: () => void
     onPressSkip: () => void
 }
 
-const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressTogglePlayPause, onPressSkip }: ActionButtonsProps) => {
+const ActionButtons = ({ timerIsOff, disableReset, onPressReset, onPressTogglePlayPause, onPressSkip }: ActionButtonsProps) => {
     return (
         <View style={styles.container}>
             {/* Reset button */}
@@ -34,16 +34,16 @@ const ActionButtons = ({ timerIsRunning, disableReset, onPressReset, onPressTogg
                 onPress={onPressTogglePlayPause}
             >
                 {
-                    timerIsRunning
-                        ? <PauseIcon size={24} />
-                        : <PlayIcon size={24} />
+                    timerIsOff
+                        ? <PlayIcon size={24} />
+                        : <PauseIcon size={24} />
                 }
             </AppButton>
 
             {/* Skip button */}
             <AppButton
                 style={styles.sideButton}
-                disabled={!timerIsRunning}
+                disabled={timerIsOff}
                 onPress={onPressSkip}
             >
                 <SkipIcon
