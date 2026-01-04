@@ -16,8 +16,25 @@ const MODE_DURATION: Record<Mode, number> = {
 };
 
 type PomodoroStateType = {
+    /**
+     * Current session mode: work, short break, or long break.
+     */
     currentMode: Mode
+
+    /**
+     * Duration of the current mode session in seconds.
+     * 
+     * Used for:
+     * - Comparing with `displayTime` to check if the Reset button should be disabled.
+     * - Resetting `displayTime` to this value when pressing the Reset button.
+     */
     currentModeDuration: number
+
+    /**
+     * Indicates whether the timer is currently paused.
+     * - true: timer is off
+     * - false: timer is running
+     */
     timerIsOff: boolean
 
     /**
@@ -37,6 +54,11 @@ type PomodoroStateType = {
      * - Set to `null` when the timer is not running.
      */
     endTime: null | number
+
+    /**
+     * Counts completed work sessions.
+     * Used to determine when to switch to long breaks.
+     */
     completedWorkSessions: number
 };
 
@@ -52,15 +74,59 @@ const initialState: PomodoroStateType = {
 };
 
 /**
- * Applies a mode and resets its duration.
+ * Sets the given session mode and resets its duration.
+ *
+ * - Updates `currentMode` to the new mode.
+ * - Resets `currentModeDuration` and `displayTime` to match the new mode.
  */
-const applyMode = (state: PomodoroStateType, mode: Mode) => {
-    state.currentMode = mode
-    const duration = MODE_DURATION[mode]
+const applyMode = (state: PomodoroStateType, newMode: Mode) => {
+    // Set new mode
+    state.currentMode = newMode
+
+    // Set new mode durations
+    const duration = MODE_DURATION[state.currentMode]
     state.currentModeDuration = duration
     state.displayTime = duration
 }
 
+/**
+ * Move to the next session mode based on current state.
+ * 
+ * - If the current session was a work session, increments completed work sessions
+ *   and switches to a short or long break.
+ * - If the current session was a break, switches to a work session.
+ * - Updates `currentMode`, `currentModeDuration`, and `displayTime` accordingly.
+ */
+const moveToNextSessionMode = (state: PomodoroStateType) => {
+    // If the finished session was a work session: increment work counter, switch to a break session and exit
+    if (state.currentMode === 'work') {
+        // increment work counter
+        state.completedWorkSessions += 1
+
+        // After 4 completed work sessions: switch to a long break.
+        // Otherwise: switch to a short break.
+        const newBreakSessionMode = state.completedWorkSessions % 4 === 0
+            ? "longBreak"
+            : "shortBreak"
+
+        // Switch to break
+        applyMode(state, newBreakSessionMode)
+        return
+    }
+
+    // If the finished session was a break: switch to a work session
+    applyMode(state, "work")
+}
+
+/**
+ * Pomodoro slice for managing timer state and sessions.
+ *
+ * - Handles timer modes: work, short break, long break.
+ * - Tracks completed work sessions to switch to long breaks automatically.
+ * - Manages `displayTime` for UI and `endTime` for accurate real-time countdowns,
+ *   even if the app goes to background or device is locked.
+ * - Provides actions to set mode, toggle timer, reset, tick, and skip sessions.
+ */
 const pomodoroSlice = createSlice({
     name: "pomodoro",
     initialState,
@@ -72,7 +138,12 @@ const pomodoroSlice = createSlice({
          * - Updates session values: `mode`, `modeDuration`, and `displayTime`
          *   to the duration of the new mode session.
          */
-        setMode(state, action: PayloadAction<Mode>) {
+        setNewMode(state, action: PayloadAction<Mode>) {
+            const newMode = action.payload
+
+            // If selecting the same mode: Exit
+            if (newMode === state.currentMode) return
+
             // Changing mode stops the timer
             state.timerIsOff = true
             state.endTime = null
@@ -107,24 +178,8 @@ const pomodoroSlice = createSlice({
             state.timerIsOff = true
             state.endTime = null
 
-            // If the finished session was a work session: increment work counter and switch to a break session and exit
-            if (state.currentMode === 'work') {
-                // increment work counter
-                state.completedWorkSessions += 1
-
-                // After 4 completed work sessions: switch to a long break.
-                // Otherwise: switch to a short break.
-                const newBreakSessionMode = state.completedWorkSessions % 4 === 0
-                    ? "longBreak"
-                    : "shortBreak"
-
-                // Switch to break
-                applyMode(state, newBreakSessionMode)
-                return
-            }
-
-            // If the finished session was a break: switch to a work session
-            applyMode(state, "work")
+            // Move to the next session
+            moveToNextSessionMode(state)
         },
 
         /**
@@ -133,7 +188,7 @@ const pomodoroSlice = createSlice({
          * - Resets `displayTime` to the full duration of the current mode session.
          */
         resetSession(state) {
-            // Stop mode stops the timer
+            // Reset session stops the timer
             state.timerIsOff = true
             state.endTime = null
 
@@ -163,30 +218,23 @@ const pomodoroSlice = createSlice({
         },
 
         /**
-         * Skip the current session.
-         * 
-         * - Sets `displayTime` to 0 for immediate visual feedback (timer shows 00:00 briefly).
-         * - Sets `endTime` to now.
-         *
-         * All session-end logic remains in `tick()`.
+         * Stop timer and skip the current session.
+         * - Sets `timerIsOff = true` and `endTime = null`.
+         * - Move to the next session
          */
         skipSession(state) {
-            // Set UI to show 00:00 immediately as visual feedback
-            state.displayTime = 0
+            // stops the timer
+            state.timerIsOff = true
+            state.endTime = null
 
-            // Set 'endTime' to the current timestamp and leave session-end logic to 'tick()'.
-            // This ensures:
-            // - All session-end behavior stays centralized in 'tick()', avoiding duplicated logic.
-            // - The timer briefly displays 00:00 as visual feedback.
-            //   This happens because the session-end logic runs in the next tick cycle inside 'tick()',
-            //   creating a short delay that lets the user notice 00:00 before transitioning to the next session.
-            state.endTime = Date.now()
+            // Move to the next session
+            moveToNextSessionMode(state)
         }
     }
 });
 
 export const {
-    setMode,
+    setNewMode,
     tick,
     resetSession,
     toggleTimer,

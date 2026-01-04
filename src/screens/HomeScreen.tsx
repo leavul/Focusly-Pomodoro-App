@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { ModeSwitcher, TimerDisplay, TimerStatusDisplay, ActionButtons } from '../components/pomodoro'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { setMode, tick, resetSession, toggleTimer, skipSession } from '../store/slices/pomodoroSlice';
+import { setNewMode, tick, resetSession, toggleTimer, skipSession } from '../store/slices/pomodoroSlice';
 import { formatTime } from '../utils';
 
 const HomeScreen = () => {
@@ -37,7 +37,7 @@ const HomeScreen = () => {
         <View style={styles.container}>
             <ModeSwitcher
                 currentMode={currentMode}
-                onChange={(newMode) => dispatch(setMode(newMode))}
+                onChange={(newMode) => dispatch(setNewMode(newMode))}
             />
 
             {/* Timer display */}
