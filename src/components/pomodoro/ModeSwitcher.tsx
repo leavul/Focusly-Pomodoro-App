@@ -6,36 +6,45 @@ import { colors, radius, spacing } from '../../theme';
 import { s, vs } from 'react-native-size-matters';
 
 type ModeSwitcherProps = {
-    mode: Mode;
+    currentMode: Mode;
     onChange: (mode: Mode) => void;
 };
 
-const ModeSwitcher = ({ mode, onChange }: ModeSwitcherProps) => {
+const MODES: { key: Mode; label: string }[] = [
+    { key: 'work', label: 'Work' },
+    { key: 'shortBreak', label: 'Short Break' },
+    { key: 'longBreak', label: 'Long Break' },
+];
+
+/**
+ * ModeSwitcher component
+ *
+ * Displays buttons to switch between Pomodoro modes:
+ * - Work
+ * - Short Break
+ * - Long Break
+ *
+ * Props:
+ * - currentMode: the active mode.
+ * - onChange: callback when a mode button is pressed.
+ *
+ * Behavior:
+ * - Highlights the active mode.
+ * - Calls `onChange` with the selected mode when a button is pressed.
+ */
+const ModeSwitcher = ({ currentMode, onChange }: ModeSwitcherProps) => {
     return (
         <View style={styles.container}>
-            {/* Work mode */}
-            <Pressable
-                style={[styles.modeButton, mode === 'work' && styles.active]}
-                onPress={() => onChange('work')}
-            >
-                <AppText>Work</AppText>
-            </Pressable>
-
-            {/* Short break mode */}
-            <Pressable
-                style={[styles.modeButton, mode === 'shortBreak' && styles.active]}
-                onPress={() => onChange('shortBreak')}
-            >
-                <AppText>Short Break</AppText>
-            </Pressable>
-
-            {/* Long break mode */}
-            <Pressable
-                style={[styles.modeButton, mode === 'longBreak' && styles.active]}
-                onPress={() => onChange('longBreak')}
-            >
-                <AppText>Long Break</AppText>
-            </Pressable>
+            {/* Render Pomodoro modes */}
+            {MODES.map(({ key, label }) => (
+                <Pressable
+                    key={key}
+                    style={[styles.modeButton, currentMode === key && styles.active]}
+                    onPress={() => onChange(key)}
+                >
+                    <AppText>{label}</AppText>
+                </Pressable>
+            ))}
         </View>
     )
 }

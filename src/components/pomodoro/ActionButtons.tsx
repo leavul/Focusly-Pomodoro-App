@@ -14,7 +14,26 @@ type ActionButtonsProps = {
     onPressSkip: () => void
 }
 
-const ActionButtons = ({ timerIsOff, disableReset, onPressReset, onPressTogglePlayPause, onPressSkip }: ActionButtonsProps) => {
+/**
+ * ActionButtons component
+ *
+ * Three main timer controls for the Pomodoro app:
+ * - Reset: resets the current session timer (disabled if already full).
+ * - Play/Pause: toggles the timer state.
+ * - Skip: immediately ends the current session (disabled if timer is stopped).
+ *
+ * Props:
+ * - timerIsOff: whether the timer is currently stopped.
+ * - disableReset: disables the Reset button if true.
+ * - onPressReset / onPressTogglePlayPause / onPressSkip: callbacks for the buttons.
+ */
+const ActionButtons = ({
+    timerIsOff,
+    disableReset,
+    onPressReset,
+    onPressTogglePlayPause,
+    onPressSkip
+}: ActionButtonsProps) => {
     return (
         <View style={styles.container}>
             {/* Reset button */}

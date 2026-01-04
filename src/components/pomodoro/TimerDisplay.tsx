@@ -8,11 +8,18 @@ type TimeDisplayProps = {
   time: string;
 };
 
-const TimeDisplay = ({ time }: TimeDisplayProps) => {
-  return <AppText style={styles.timerText} variant='timer'>{time}</AppText>;
+const TimerDisplay = ({ time }: TimeDisplayProps) => {
+  return (
+    <AppText
+      style={styles.timerText}
+      variant='timer'
+    >
+      {time}
+    </AppText>
+  );
 };
 
-export default TimeDisplay;
+export default TimerDisplay;
 
 const styles = StyleSheet.create({
   timerText: {
