@@ -8,14 +8,13 @@ import Svg from "react-native-svg";
  * Created to avoid repeating size scaling, color defaults,
  */
 
-const SvgIconWrapper = ({ size = 24, fill = colors.secondary, viewBox, children, ...props }: SvgIconProps) => {
+const SvgIconWrapper = ({ size = 24, fill = colors.secondary, children, ...props }: SvgIconProps) => {
     const iconSize = s(size);
     return (
         <Svg
             width={iconSize}
             height={iconSize}
             fill={fill}
-            viewBox={viewBox}
             {...props}
         >
             {children}

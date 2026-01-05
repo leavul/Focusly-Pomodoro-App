@@ -66,8 +66,8 @@ const ActionButtons = ({
                 onPress={onPressSkip}
             >
                 <SkipIcon
-                    fill={colors.background}
                     size={20}
+                    fill={colors.background}
                 />
             </AppButton>
         </View>
