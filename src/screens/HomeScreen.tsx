@@ -4,7 +4,8 @@ import {
     ModeSwitcher,
     TimerDisplay,
     TimerStatusIndicator,
-    ActionButtons
+    ActionButtons,
+    WorkIndicator
 } from '../components/pomodoro'
 import { RootState } from '../store';
 import {
@@ -26,6 +27,7 @@ const HomeScreen = () => {
         timerStatus,
         mode: currentMode,
         remaining,
+        completedWork
     } = useSelector((state: RootState) => state.pomodoro)
 
     useEffect(() => {
@@ -73,6 +75,9 @@ const HomeScreen = () => {
                 }
                 onPressSkip={() => dispatch(skip())}
             />
+
+            {/* Work indicator */}
+            <WorkIndicator completedWork={completedWork} />
         </View>
     )
 }

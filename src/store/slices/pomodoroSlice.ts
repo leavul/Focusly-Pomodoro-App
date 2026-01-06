@@ -23,13 +23,13 @@ const initialState: PomodoroState = {
     completedWork: 0,
 }
 
-type NextSessionResult = {
+type NextSessionType = {
     mode: Mode
     remaining: number
     completedWork: number
 }
 
-function nextSession(state: PomodoroState): NextSessionResult {
+function nextSession(state: PomodoroState): NextSessionType {
     if (state.mode === 'work') {
         const completed = state.completedWork + 1
         const nextMode = completed % 4 === 0 ? 'longBreak' : 'shortBreak'

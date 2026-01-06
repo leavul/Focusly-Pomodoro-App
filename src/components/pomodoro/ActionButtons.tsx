@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         marginTop: vs(spacing.xl),
-        gap: s(spacing.lg)
+        gap: s(spacing.lg),
     },
     sideButton: {
         alignSelf: 'center',
