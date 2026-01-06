@@ -1,7 +1,6 @@
-export type { Mode } from './types';
-export { default as ModeSwitcher } from './ModeSwitcher';
+import ModeSwitcher from './ModeSwitcher';
+import TimerDisplay from './TimerDisplay'
+import TimerStatusIndicator from './TimerStatusIndicator'
+import ActionButtons from "./ActionButtons"
 
-export { default as TimerDisplay } from './TimerDisplay'
-export { default as TimerStatusDisplay } from './TimerStatusDisplay'
-
-export { default as ActionButtons } from "./ActionButtons"
+export { ModeSwitcher, TimerDisplay, TimerStatusIndicator, ActionButtons };

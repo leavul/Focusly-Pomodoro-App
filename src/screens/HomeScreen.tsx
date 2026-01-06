@@ -1,58 +1,69 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { ModeSwitcher, TimerDisplay, TimerStatusDisplay, ActionButtons } from '../components/pomodoro'
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react'
+import {
+    ModeSwitcher,
+    TimerDisplay,
+    TimerStatusIndicator,
+    ActionButtons
+} from '../components/pomodoro'
 import { RootState } from '../store';
-import { setNewMode, tick, resetSession, toggleTimer, skipSession } from '../store/slices/pomodoroSlice';
+import {
+    changeMode,
+    start,
+    pause,
+    tick,
+    reset,
+    skip,
+} from '../store/slices/pomodoroSlice';
+import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
 
 const HomeScreen = () => {
 
     const dispatch = useDispatch()
     const {
-        currentMode,
-        currentModeDuration,
-        timerIsOff,
-        displayTime,
+        phase,
+        mode: currentMode,
+        remaining,
     } = useSelector((state: RootState) => state.pomodoro)
 
     useEffect(() => {
-        // Exit early if the timer is not running
-        if (timerIsOff) return;
+        if (phase !== 'running') return
 
-        // Dispatch 'tick()' every second while the timer is active
         const interval = setInterval(() => {
-            dispatch(tick());
-        }, 1000);
+            dispatch(tick())
+        }, 1000)
 
-        // Cleanup interval when the timer stops or component unmounts
-        return () => clearInterval(interval);
-    }, [timerIsOff]);
+        return () => clearInterval(interval)
+    }, [phase])
 
-    // Convert the display-only time (seconds) into visual time for UI
-    const formattedTime = formatTime(displayTime);
+    const formattedTime = formatTime(remaining);
+    const timerIsRunning = phase === 'running'
 
     return (
-        // Switch mode section
         <View style={styles.container}>
+            {/* Switch mode section */}
             <ModeSwitcher
                 currentMode={currentMode}
-                onChange={(newMode) => dispatch(setNewMode(newMode))}
+                onChange={(newMode) => dispatch(changeMode(newMode))}
             />
 
             {/* Timer display */}
             <TimerDisplay time={formattedTime} />
 
             {/* Timer status indicator */}
-            <TimerStatusDisplay timerIsOff={timerIsOff} />
+            <TimerStatusIndicator timerIsRunning={timerIsRunning} />
 
             {/* Action buttons: Reset, Play/Pause, Skip */}
             <ActionButtons
-                timerIsOff={timerIsOff}
-                disableReset={displayTime === currentModeDuration}
-                onPressReset={() => dispatch(resetSession())}
-                onPressTogglePlayPause={() => dispatch(toggleTimer())}
-                onPressSkip={() => dispatch(skipSession())}
+                timerIsRunning={timerIsRunning}
+                onPressReset={() => dispatch(reset())}
+                onPressPlayPause={() =>
+                    timerIsRunning
+                        ? dispatch(pause())
+                        : dispatch(start())
+                }
+                onPressSkip={() => dispatch(skip())}
             />
         </View>
     )

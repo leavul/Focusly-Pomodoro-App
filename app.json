@@ -33,7 +33,8 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-audio"
     ],
     "expo": {
       "plugins": [
@@ -43,6 +44,10 @@
             "image": "./assets/splash-icon.png",
             "backgroundColor": "#FDFBF7",
             "imageWidth": 200
+          },
+          "expo-audio",
+          {
+            "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
           }
         ]
       ]

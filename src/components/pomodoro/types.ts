@@ -1,1 +1,0 @@
-export type Mode = "work" | "shortBreak" | "longBreak";

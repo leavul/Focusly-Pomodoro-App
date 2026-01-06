@@ -7,31 +7,16 @@ import { s, vs } from 'react-native-size-matters'
 import PauseIcon from '../svg/PauseIcon'
 
 type ActionButtonsProps = {
-    timerIsOff: boolean,
-    disableReset: boolean
+    timerIsRunning: boolean
     onPressReset: () => void
-    onPressTogglePlayPause: () => void
+    onPressPlayPause: () => void
     onPressSkip: () => void
 }
 
-/**
- * ActionButtons component
- *
- * Three main timer controls for the Pomodoro app:
- * - Reset: resets the current session timer (disabled if already full).
- * - Play/Pause: toggles the timer state.
- * - Skip: immediately ends the current session (disabled if timer is stopped).
- *
- * Props:
- * - timerIsOff: whether the timer is currently stopped.
- * - disableReset: disables the Reset button if true.
- * - onPressReset / onPressTogglePlayPause / onPressSkip: callbacks for the buttons.
- */
 const ActionButtons = ({
-    timerIsOff,
-    disableReset,
+    timerIsRunning,
     onPressReset,
-    onPressTogglePlayPause,
+    onPressPlayPause,
     onPressSkip
 }: ActionButtonsProps) => {
     return (
@@ -39,7 +24,6 @@ const ActionButtons = ({
             {/* Reset button */}
             <AppButton
                 style={styles.sideButton}
-                disabled={disableReset}
                 onPress={onPressReset}
             >
                 <ResetIcon size={20} />
@@ -50,19 +34,18 @@ const ActionButtons = ({
                 padding={34}
                 enableBorderWidth={false}
                 backgroundColor={colors.primary}
-                onPress={onPressTogglePlayPause}
+                onPress={onPressPlayPause}
             >
                 {
-                    timerIsOff
-                        ? <PlayIcon size={24} />
-                        : <PauseIcon size={24} />
+                    timerIsRunning
+                        ? <PauseIcon size={24} />
+                        : <PlayIcon size={24} />
                 }
             </AppButton>
 
             {/* Skip button */}
             <AppButton
                 style={styles.sideButton}
-                disabled={timerIsOff}
                 onPress={onPressSkip}
             >
                 <SkipIcon
