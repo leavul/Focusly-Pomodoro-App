@@ -9,7 +9,7 @@ const MODE_DURATION: Record<Mode, number> = {
 
 type PomodoroState = {
     mode: Mode
-    phase: 'idle' | 'running'
+    timerStatus: 'paused' | 'running' | 'completed'
     remaining: number
     endTime: number | null
     completedWork: number
@@ -17,19 +17,23 @@ type PomodoroState = {
 
 const initialState: PomodoroState = {
     mode: 'work',
-    phase: 'idle',
+    timerStatus: 'paused',
     remaining: MODE_DURATION['work'],
     endTime: null,
     completedWork: 0,
 }
 
-// helper function
-function nextSession(state: PomodoroState): PomodoroState {
+type NextSessionResult = {
+    mode: Mode
+    remaining: number
+    completedWork: number
+}
+
+function nextSession(state: PomodoroState): NextSessionResult {
     if (state.mode === 'work') {
         const completed = state.completedWork + 1
         const nextMode = completed % 4 === 0 ? 'longBreak' : 'shortBreak'
         return {
-            ...state,
             mode: nextMode,
             remaining: MODE_DURATION[nextMode],
             completedWork: completed
@@ -43,6 +47,16 @@ function nextSession(state: PomodoroState): PomodoroState {
     }
 }
 
+function applyNextSession(state: PomodoroState, { newTimerStatus }: { newTimerStatus: 'paused' | 'completed' }) {
+    const next = nextSession(state)
+
+    state.mode = next.mode
+    state.timerStatus = newTimerStatus
+    state.remaining = next.remaining
+    state.completedWork = next.completedWork
+    state.endTime = null
+}
+
 const pomodoroSlice = createSlice({
     name: 'pomodoro',
     initialState,
@@ -52,26 +66,26 @@ const pomodoroSlice = createSlice({
 
             state.mode = action.payload
             state.remaining = MODE_DURATION[action.payload]
-            state.phase = 'idle'
+            state.timerStatus = 'paused'
             state.endTime = null
         },
 
         start(state) {
-            if (state.phase === 'running') return
+            if (state.timerStatus === 'running') return
 
-            state.phase = 'running'
+            state.timerStatus = 'running'
             state.endTime = Date.now() + (state.remaining * 1000)
         },
 
         pause(state) {
-            if (state.phase === 'idle') return
+            if (state.timerStatus === 'paused') return
 
-            state.phase = 'idle'
+            state.timerStatus = 'paused'
             state.endTime = null
         },
 
         tick(state) {
-            if (state.phase === 'idle' || !state.endTime) return
+            if (state.timerStatus === 'paused' || state.endTime === null) return
 
             const newRemaining = Math.ceil((state.endTime - Date.now()) / 1000)
             if (newRemaining <= 0) {
@@ -84,34 +98,24 @@ const pomodoroSlice = createSlice({
         },
 
         finish(state) {
-            const next = nextSession(state)
-
-            state.mode = next.mode
-            state.remaining = next.remaining
-            state.completedWork = next.completedWork
-            state.phase = 'idle'
-            state.endTime = null
-
-            // TODO: trigger user notification (sound/modal) for session end
+            applyNextSession(state, { newTimerStatus: 'completed' })
         },
 
         reset(state) {
             if (state.remaining === MODE_DURATION[state.mode]) return
 
             state.remaining = MODE_DURATION[state.mode]
-            state.phase = 'idle'
+            state.timerStatus = 'paused'
             state.endTime = null
         },
 
         skip(state) {
-            const next = nextSession(state)
-
-            state.mode = next.mode
-            state.remaining = next.remaining
-            state.completedWork = next.completedWork
-            state.phase = 'idle'
-            state.endTime = null
+            applyNextSession(state, { newTimerStatus: 'paused' })
         },
+
+        clearTimerCompleted(state) {
+            state.timerStatus = 'paused'
+        }
     }
 });
 
@@ -122,6 +126,7 @@ export const {
     tick,
     reset,
     skip,
+    clearTimerCompleted
 } = pomodoroSlice.actions
 
 export default pomodoroSlice.reducer

@@ -14,6 +14,7 @@ import {
     tick,
     reset,
     skip,
+    clearTimerCompleted,
 } from '../store/slices/pomodoroSlice';
 import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
@@ -22,23 +23,30 @@ const HomeScreen = () => {
 
     const dispatch = useDispatch()
     const {
-        phase,
+        timerStatus,
         mode: currentMode,
         remaining,
     } = useSelector((state: RootState) => state.pomodoro)
 
     useEffect(() => {
-        if (phase !== 'running') return
+        if (timerStatus === 'running') {
+            const interval = setInterval(() => {
+                dispatch(tick())
+            }, 1000)
 
-        const interval = setInterval(() => {
-            dispatch(tick())
-        }, 1000)
+            return () => clearInterval(interval)
+        }
 
-        return () => clearInterval(interval)
-    }, [phase])
+        if (timerStatus === 'completed') {
+            console.log('Timer completed')
+            // TODO: Trigger Model and play sound here, to inform the user that the timer has finished
+
+            dispatch(clearTimerCompleted())
+        }
+    }, [timerStatus])
 
     const formattedTime = formatTime(remaining);
-    const timerIsRunning = phase === 'running'
+    const timerIsRunning = timerStatus === 'running'
 
     return (
         <View style={styles.container}>
