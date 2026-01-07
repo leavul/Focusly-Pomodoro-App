@@ -1,5 +1,6 @@
 const colors = {
     background: '#FDFBF7',
+    modalOverlay: '#00000047',
 
     primary: '#F5E7D0',
     secondary: '#463939ff',

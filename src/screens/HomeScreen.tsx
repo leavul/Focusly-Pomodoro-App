@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
     ModeSwitcher,
     TimerDisplay,
@@ -19,6 +19,7 @@ import {
 } from '../store/slices/pomodoroSlice';
 import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
+import EndSessionModal from '../components/pomodoro/EndSessionModal';
 
 const HomeScreen = () => {
 
@@ -30,6 +31,8 @@ const HomeScreen = () => {
         completedWork
     } = useSelector((state: RootState) => state.pomodoro)
 
+    const [endSessionModalVisible, setEndSessionModalVisible] = useState(false)
+
     useEffect(() => {
         if (timerStatus === 'running') {
             const interval = setInterval(() => {
@@ -40,15 +43,17 @@ const HomeScreen = () => {
         }
 
         if (timerStatus === 'completed') {
-            console.log('Timer completed')
-            // TODO: Trigger Model and play sound here, to inform the user that the timer has finished
-
-            dispatch(clearTimerCompleted())
+            setEndSessionModalVisible(true)
         }
     }, [timerStatus])
 
     const formattedTime = formatTime(remaining);
     const timerIsRunning = timerStatus === 'running'
+
+    const onCloseEndSessionModal = () => {
+        setEndSessionModalVisible(false)
+        dispatch(clearTimerCompleted())
+    }
 
     return (
         <View style={styles.container}>
@@ -78,6 +83,12 @@ const HomeScreen = () => {
 
             {/* Work indicator */}
             <WorkIndicator completedWork={completedWork} />
+
+            {/* End session modal */}
+            <EndSessionModal
+                visible={endSessionModalVisible}
+                onClose={onCloseEndSessionModal}
+            />
         </View>
     )
 }

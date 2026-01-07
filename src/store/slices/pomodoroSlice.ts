@@ -47,11 +47,11 @@ function nextSession(state: PomodoroState): NextSessionType {
     }
 }
 
-function applyNextSession(state: PomodoroState, { newTimerStatus }: { newTimerStatus: 'paused' | 'completed' }) {
+function applyNextSession(state: PomodoroState) {
     const next = nextSession(state)
 
     state.mode = next.mode
-    state.timerStatus = newTimerStatus
+    state.timerStatus = 'paused'
     state.remaining = next.remaining
     state.completedWork = next.completedWork
     state.endTime = null
@@ -98,7 +98,7 @@ const pomodoroSlice = createSlice({
         },
 
         finish(state) {
-            applyNextSession(state, { newTimerStatus: 'completed' })
+            state.timerStatus = 'completed'
         },
 
         reset(state) {
@@ -110,11 +110,11 @@ const pomodoroSlice = createSlice({
         },
 
         skip(state) {
-            applyNextSession(state, { newTimerStatus: 'paused' })
+            applyNextSession(state)
         },
 
         clearTimerCompleted(state) {
-            state.timerStatus = 'paused'
+            applyNextSession(state)
         }
     }
 });
