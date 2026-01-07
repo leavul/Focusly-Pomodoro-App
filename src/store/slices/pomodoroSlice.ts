@@ -109,13 +109,9 @@ const pomodoroSlice = createSlice({
             state.endTime = null
         },
 
-        skip(state) {
+        moveToNextSession(state) {
             applyNextSession(state)
         },
-
-        clearTimerCompleted(state) {
-            applyNextSession(state)
-        }
     }
 });
 
@@ -125,8 +121,7 @@ export const {
     pause,
     tick,
     reset,
-    skip,
-    clearTimerCompleted
+    moveToNextSession,
 } = pomodoroSlice.actions
 
 export default pomodoroSlice.reducer

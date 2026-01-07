@@ -10,7 +10,7 @@ type EndSessionModalProps = ModalProps & {
     onClose: () => void
 }
 
-const EndSessionModal = ({ visible, onClose, ...props }: EndSessionModalProps) => {
+const TimerCompletedModal = ({ visible, onClose, ...props }: EndSessionModalProps) => {
     return (
         <Modal
             visible={visible}
@@ -39,7 +39,7 @@ const EndSessionModal = ({ visible, onClose, ...props }: EndSessionModalProps) =
     )
 }
 
-export default EndSessionModal
+export default TimerCompletedModal
 
 const styles = StyleSheet.create({
     overlay: {

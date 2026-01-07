@@ -1,7 +1,7 @@
 import { StyleSheet, ActivityIndicator, View } from 'react-native'
 import { ReactNode, useEffect, useState } from 'react'
 import { colors } from '../../theme';
-import loadAppFonts from '../../hooks/loadAppFonts';
+import { loadAppFonts } from '../../hooks';
 
 type AppBootstrapProps = {
     children: ReactNode

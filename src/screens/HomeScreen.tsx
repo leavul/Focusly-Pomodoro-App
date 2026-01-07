@@ -14,15 +14,14 @@ import {
     pause,
     tick,
     reset,
-    skip,
-    clearTimerCompleted,
+    moveToNextSession,
 } from '../store/slices/pomodoroSlice';
 import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
-import EndSessionModal from '../components/pomodoro/EndSessionModal';
+import TimerCompletedModal from '../components/pomodoro/TimerCompletedModal';
+import { useAlertSound } from '../hooks';
 
 const HomeScreen = () => {
-
     const dispatch = useDispatch()
     const {
         timerStatus,
@@ -31,7 +30,8 @@ const HomeScreen = () => {
         completedWork
     } = useSelector((state: RootState) => state.pomodoro)
 
-    const [endSessionModalVisible, setEndSessionModalVisible] = useState(false)
+    const [timerCompletedModalVisible, setTimerCompletedModalVisible] = useState(false)
+    const { playSound } = useAlertSound()
 
     useEffect(() => {
         if (timerStatus === 'running') {
@@ -43,7 +43,8 @@ const HomeScreen = () => {
         }
 
         if (timerStatus === 'completed') {
-            setEndSessionModalVisible(true)
+            playSound()
+            setTimerCompletedModalVisible(true)
         }
     }, [timerStatus])
 
@@ -51,8 +52,8 @@ const HomeScreen = () => {
     const timerIsRunning = timerStatus === 'running'
 
     const onCloseEndSessionModal = () => {
-        setEndSessionModalVisible(false)
-        dispatch(clearTimerCompleted())
+        setTimerCompletedModalVisible(false)
+        dispatch(moveToNextSession())
     }
 
     return (
@@ -78,16 +79,16 @@ const HomeScreen = () => {
                         ? dispatch(pause())
                         : dispatch(start())
                 }
-                onPressSkip={() => dispatch(skip())}
+                onPressSkip={() => dispatch(moveToNextSession())}
             />
 
             {/* Work indicator */}
             <WorkIndicator completedWork={completedWork} />
 
-            {/* End session modal */}
-            <EndSessionModal
-                visible={endSessionModalVisible}
-                onClose={onCloseEndSessionModal}
+            {/* Timer completed modal */}
+            <TimerCompletedModal
+                visible={timerCompletedModalVisible}
+                onClose={() => onCloseEndSessionModal()}
             />
         </View>
     )
