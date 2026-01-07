@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { colors, spacing } from '../../theme';
 import { s, vs } from 'react-native-size-matters';
+import AppText from '../ui/AppText';
 
 type CompletedWorkSessionIndicatorProps = {
   completedWork: number
@@ -13,18 +14,21 @@ const WorkIndicator = ({ completedWork }: CompletedWorkSessionIndicatorProps) =>
   const cycleLength = 4;
   const remainder = completedWork % cycleLength;
   const activeDots = (remainder === 0 && completedWork > 0) ? cycleLength : remainder;
-  
+
   return (
     <View style={styles.container}>
-      {[...Array(4)].map((_, index) => (
-        <View
-          key={index}
-          style={[
-            styles.dot,
-            index < activeDots && styles.activeDot
-          ]}
-        />
-      ))}
+      <AppText>Pomodoro Work Sessions:</AppText>
+      <View style={styles.dotsContainer}>
+        {[...Array(4)].map((_, index) => (
+          <View
+            key={index}
+            style={[
+              styles.dot,
+              index < activeDots && styles.activeDot
+            ]}
+          />
+        ))}
+      </View>
     </View>
   );
 };
@@ -34,6 +38,10 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: SCREEN_HEIGHT * 0.80,
     marginBottom: vs(60),
+    alignItems: 'center'
+  },
+  dotsContainer: {
+    marginTop: vs(spacing.sm),
     flexDirection: 'row',
     gap: s(spacing.sm),
   },
