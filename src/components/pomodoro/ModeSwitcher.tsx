@@ -7,16 +7,17 @@ import { s, vs } from 'react-native-size-matters';
 
 type ModeSwitcherProps = {
     currentMode: Mode;
+    focusCount: number,
     onChange: (mode: Mode) => void;
 };
 
 const AVAILABLE_MODES: { key: Mode; label: string }[] = [
-    { key: 'work', label: 'Work' },
+    { key: 'focus', label: 'Focus' },
     { key: 'shortBreak', label: 'Short Break' },
     { key: 'longBreak', label: 'Long Break' },
 ];
 
-const ModeSwitcher = ({ currentMode, onChange }: ModeSwitcherProps) => {
+const ModeSwitcher = ({ currentMode, focusCount, onChange }: ModeSwitcherProps) => {
     return (
         <View style={styles.container}>
             {/* Render Pomodoro modes */}
@@ -27,7 +28,9 @@ const ModeSwitcher = ({ currentMode, onChange }: ModeSwitcherProps) => {
                         style={[styles.modeButton, currentMode === key && styles.active]}
                         onPress={() => onChange(key)}
                     >
-                        <AppText>{label}</AppText>
+                        <AppText>
+                            {key === 'focus' ? `${label} (${focusCount})` : label}
+                        </AppText>
                     </Pressable>
                 ))
             }

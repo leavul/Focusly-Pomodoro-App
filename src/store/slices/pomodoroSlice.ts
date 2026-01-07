@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mode } from "../../types/pomodoro";
 
 const MODE_DURATION: Record<Mode, number> = {
-    work: 25 * 60,
+    focus: 25 * 60,
     shortBreak: 5 * 60,
     longBreak: 15 * 60
 }
@@ -12,38 +12,38 @@ type PomodoroState = {
     timerStatus: 'paused' | 'running' | 'completed'
     remaining: number
     endTime: number | null
-    completedWork: number
+    focusCount: number
 }
 
 const initialState: PomodoroState = {
-    mode: 'work',
+    mode: 'focus',
     timerStatus: 'paused',
-    remaining: MODE_DURATION['work'],
+    remaining: MODE_DURATION['focus'],
     endTime: null,
-    completedWork: 0,
+    focusCount: 0,
 }
 
 type NextSessionType = {
     mode: Mode
     remaining: number
-    completedWork: number
+    focusCount: number
 }
 
 function nextSession(state: PomodoroState): NextSessionType {
-    if (state.mode === 'work') {
-        const completed = state.completedWork + 1
+    if (state.mode === 'focus') {
+        const completed = state.focusCount + 1
         const nextMode = completed % 4 === 0 ? 'longBreak' : 'shortBreak'
         return {
             mode: nextMode,
             remaining: MODE_DURATION[nextMode],
-            completedWork: completed
+            focusCount: completed
         }
     }
 
     return {
         ...state,
-        mode: 'work',
-        remaining: MODE_DURATION['work']
+        mode: 'focus',
+        remaining: MODE_DURATION['focus']
     }
 }
 
@@ -53,7 +53,7 @@ function applyNextSession(state: PomodoroState) {
     state.mode = next.mode
     state.timerStatus = 'paused'
     state.remaining = next.remaining
-    state.completedWork = next.completedWork
+    state.focusCount = next.focusCount
     state.endTime = null
 }
 

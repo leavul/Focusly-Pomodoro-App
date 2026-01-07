@@ -5,7 +5,7 @@ import {
     TimerDisplay,
     TimerStatusIndicator,
     ActionButtons,
-    WorkIndicator
+    FocusIndicator
 } from '../components/pomodoro'
 import { RootState } from '../store';
 import {
@@ -25,9 +25,9 @@ const HomeScreen = () => {
     const dispatch = useDispatch()
     const {
         timerStatus,
-        mode: currentMode,
+        mode,
         remaining,
-        completedWork
+        focusCount
     } = useSelector((state: RootState) => state.pomodoro)
 
     const [timerCompletedModalVisible, setTimerCompletedModalVisible] = useState(false)
@@ -60,7 +60,8 @@ const HomeScreen = () => {
         <View style={styles.container}>
             {/* Switch mode section */}
             <ModeSwitcher
-                currentMode={currentMode}
+                currentMode={mode}
+                focusCount={focusCount}
                 onChange={(newMode) => dispatch(changeMode(newMode))}
             />
 
@@ -82,8 +83,8 @@ const HomeScreen = () => {
                 onPressSkip={() => dispatch(moveToNextSession())}
             />
 
-            {/* Work indicator */}
-            <WorkIndicator completedWork={completedWork} />
+            {/* Focus indicator */}
+            <FocusIndicator focusCount={focusCount} />
 
             {/* Timer completed modal */}
             <TimerCompletedModal

@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "icon": "assets/pomodoro.icon",
-      "bundleIdentifier": "com.albaraadighriri.unknown",
+      "bundleIdentifier": "com.albaraadighriri.focuslyapp",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -27,7 +27,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.albaraadighriri.unknown"
+      "package": "com.albaraadighriri.focuslyapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

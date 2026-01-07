@@ -1,1 +1,1 @@
-export type Mode = 'work' | 'shortBreak' | 'longBreak'
+export type Mode = 'focus' | 'shortBreak' | 'longBreak'
