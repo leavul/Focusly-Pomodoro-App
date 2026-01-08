@@ -8,7 +8,7 @@ type AppModalProps = ModalProps & {
   visible: boolean
   title: string
   subtitle?: string
-  actionButtons?: ReactNode
+  children: ReactNode
 }
 
 const AppModal = ({
@@ -35,7 +35,7 @@ const AppModal = ({
             <AppText style={styles.subtitle}>{subtitle}</AppText>
           }
 
-          <View style={styles.actionButtons}>
+          <View style={styles.children}>
             {children}
           </View>
         </View>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     marginTop: vs(spacing.sm),
     textAlign: 'center',
   },
-  actionButtons: {
-    marginTop: vs(spacing.md),
+  children: {
+    marginTop: vs(spacing.lg),
   }
 })

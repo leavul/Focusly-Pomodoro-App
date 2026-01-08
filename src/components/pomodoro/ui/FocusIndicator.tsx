@@ -1,13 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { colors, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
 
 type FocusIndicatorProps = {
   focusCount: number
 }
-
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const FocusIndicator = ({ focusCount }: FocusIndicatorProps) => {
   const cycleLength = 4;
@@ -31,9 +29,7 @@ const FocusIndicator = ({ focusCount }: FocusIndicatorProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: SCREEN_HEIGHT * 0.80,
-    marginBottom: vs(60),
+    marginTop: vs(spacing.xl),
     flexDirection: 'row',
     gap: s(spacing.sm),
   },
