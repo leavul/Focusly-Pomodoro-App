@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import AppText from '../ui/AppText';
+import AppText from '../../ui/AppText';
 import { vs } from 'react-native-size-matters';
-import { spacing } from '../../theme';
+import { spacing } from '../../../theme';
 
 type TimeDisplayProps = {
   time: string;

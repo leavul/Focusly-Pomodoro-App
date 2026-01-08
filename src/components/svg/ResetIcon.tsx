@@ -1,15 +1,24 @@
+import { colors } from "../../theme";
 import SvgIconWrapper from "./SvgIconWrapper";
 import { SvgIconProps } from "./types";
-import { Path } from "react-native-svg";
+import { G, Path } from "react-native-svg";
 
 
 const ResetIcon = (props: SvgIconProps) => {
     return (
         <SvgIconWrapper
-            viewBox="-24 0 512 512"
+            viewBox="0 0 24 24"
             {...props}
         >
-            <Path d="M232 448q-46 0-84-23-39-23-61-62-23-39-23-85v-22h48v24q0 51 35 86 35 34 86 34 32 0 60-16 27-17 43-44t16-59q0-51-34-86-35-35-86-35v72l-96-96 96-96v72q47 0 85 22 38 23 61 62 22 38 22 84 0 47-22 84-22 39-61 62-40 22-85 22z" />
+            <G stroke="none" strokeWidth={1} fill="none" fillRule="evenodd">
+                <Path fillRule="nonzero" d="M0 0H24V24H0z" />
+                <Path
+                    d="M4 13a8 8 0 103.755-6.782M9.238 1.898l-1.74 3.941a1 1 0 00.512 1.319l3.94 1.74"
+                    stroke={colors.secondary}
+                    strokeWidth={1.8}
+                    strokeLinecap="round"
+                />
+            </G>
         </SvgIconWrapper >
     )
 };

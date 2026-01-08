@@ -1,3 +1,5 @@
+//TODO: Dark mode
+
 const colors = {
     background: '#FDFBF7',
     modalOverlay: '#00000047',

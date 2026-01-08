@@ -1,0 +1,160 @@
+{
+  "fill-specializations" : [
+    {
+      "value" : {
+        "solid" : "display-p3:0.99216,0.98431,0.96863,1.00000"
+      }
+    },
+    {
+      "appearance" : "dark",
+      "value" : {
+        "automatic-gradient" : "srgb:0.07059,0.07059,0.07059,1.00000"
+      }
+    }
+  ],
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "Leaves.svg",
+          "name" : "Leaves",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -9.8,
+              -223.7
+            ]
+          }
+        }
+      ],
+      "position" : {
+        "scale" : 1.3,
+        "translation-in-points" : [
+          0,
+          56
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency-specializations" : [
+        {
+          "value" : {
+            "enabled" : true,
+            "value" : 0.5
+          }
+        },
+        {
+          "appearance" : "light",
+          "value" : {
+            "enabled" : true,
+            "value" : 0.2
+          }
+        }
+      ]
+    },
+    {
+      "hidden" : false,
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "Right Hand & Clock Pivot.svg",
+          "name" : "Right Hand & Clock Pivot",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              84.2,
+              -46.6
+            ]
+          }
+        }
+      ],
+      "position" : {
+        "scale" : 1.3,
+        "translation-in-points" : [
+          0,
+          56
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "hidden" : false,
+      "layers" : [
+        {
+          "glass" : true,
+          "image-name" : "Left Hand.svg",
+          "name" : "Left Hand",
+          "position" : {
+            "scale" : 1,
+            "translation-in-points" : [
+              -67.3,
+              -8.2
+            ]
+          }
+        }
+      ],
+      "position" : {
+        "scale" : 1.3,
+        "translation-in-points" : [
+          0,
+          56
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    },
+    {
+      "layers" : [
+        {
+          "hidden" : false,
+          "image-name" : "Tomato Body.svg",
+          "name" : "Tomato Body"
+        }
+      ],
+      "position" : {
+        "scale" : 1.3,
+        "translation-in-points" : [
+          0,
+          56
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency-specializations" : [
+        {
+          "value" : {
+            "enabled" : true,
+            "value" : 0.5
+          }
+        },
+        {
+          "appearance" : "light",
+          "value" : {
+            "enabled" : true,
+            "value" : 0.2
+          }
+        }
+      ]
+    }
+  ],
+  "supported-platforms" : {
+    "squares" : "shared"
+  }
+}

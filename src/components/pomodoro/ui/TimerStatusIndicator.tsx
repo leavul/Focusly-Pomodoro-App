@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import AppText from '../ui/AppText';
+import AppText from '../../ui/AppText';
 import { vs } from 'react-native-size-matters';
-import { spacing, colors } from '../../theme';
+import { spacing, colors } from '../../../theme';
 
 type TimerStatusDisplayProps = {
   timerIsRunning: boolean;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { colors, spacing } from '../../theme';
+import { colors, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
 
 type FocusIndicatorProps = {

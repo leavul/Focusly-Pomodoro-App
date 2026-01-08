@@ -1,11 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Mode } from "../../types/pomodoro";
-
-const MODE_DURATION: Record<Mode, number> = {
-    focus: 25 * 60,
-    shortBreak: 5 * 60,
-    longBreak: 15 * 60
-}
+import { Mode, MODE_DURATION } from "../../types/pomodoro";
 
 type PomodoroState = {
     mode: Mode

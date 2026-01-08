@@ -1,8 +1,8 @@
 import { Pressable, StyleSheet, View } from 'react-native'
 import React from 'react'
-import AppText from '../ui/AppText'
-import { Mode } from '../../types/pomodoro'
-import { colors, radius, spacing } from '../../theme';
+import AppText from '../../ui/AppText'
+import { Mode } from '../../../types/pomodoro'
+import { colors, radius, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
 
 type ModeSwitcherProps = {

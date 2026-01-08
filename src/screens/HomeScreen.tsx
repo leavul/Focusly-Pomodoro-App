@@ -5,7 +5,9 @@ import {
     TimerDisplay,
     TimerStatusIndicator,
     ActionButtons,
-    FocusIndicator
+    FocusIndicator,
+    ConfirmChangeModeModal,
+    TimerCompletedModal
 } from '../components/pomodoro'
 import { RootState } from '../store';
 import {
@@ -18,19 +20,23 @@ import {
 } from '../store/slices/pomodoroSlice';
 import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
-import TimerCompletedModal from '../components/pomodoro/TimerCompletedModal';
 import { useAlertSound } from '../hooks';
+import { Mode, MODE_DURATION } from '../types/pomodoro';
 
 const HomeScreen = () => {
     const dispatch = useDispatch()
     const {
         timerStatus,
-        mode,
+        mode: currentMode,
         remaining,
         focusCount
     } = useSelector((state: RootState) => state.pomodoro)
 
     const [timerCompletedModalVisible, setTimerCompletedModalVisible] = useState(false)
+
+    const [confirmChangeModeModalVisible, setConfirmChangeModeModalVisible] = useState(false)
+    const [modeToChange, setModeToChange] = useState<null | Mode>(null)
+
     const { playSound } = useAlertSound()
 
     useEffect(() => {
@@ -48,21 +54,46 @@ const HomeScreen = () => {
         }
     }, [timerStatus])
 
-    const formattedTime = formatTime(remaining);
-    const timerIsRunning = timerStatus === 'running'
-
+    
+    const requestModeChange = (newMode: Mode) => {
+        if (newMode === currentMode) return
+        if (timerMoved) {
+            setModeToChange(newMode)
+            setConfirmChangeModeModalVisible(true)
+        } else {
+            dispatch(changeMode(newMode))
+        }
+    }
+    
+    const onConformChangeMode = () => {
+        if (modeToChange) {
+            dispatch(changeMode(modeToChange))
+            setModeToChange(null)
+        }
+        setConfirmChangeModeModalVisible(false)
+    }
+    
+    const onCancelChangeMode = () => {
+        setModeToChange(null)
+        setConfirmChangeModeModalVisible(false)
+    }
+    
     const onCloseEndSessionModal = () => {
         setTimerCompletedModalVisible(false)
         dispatch(moveToNextSession())
     }
-
+    
+    const formattedTime = formatTime(remaining);
+    const timerIsRunning = timerStatus === 'running'
+    const timerMoved = remaining !== MODE_DURATION[currentMode]
+    
     return (
         <View style={styles.container}>
             {/* Switch mode section */}
             <ModeSwitcher
-                currentMode={mode}
+                currentMode={currentMode}
                 focusCount={focusCount}
-                onChange={(newMode) => dispatch(changeMode(newMode))}
+                onChange={requestModeChange}
             />
 
             {/* Timer display */}
@@ -74,17 +105,26 @@ const HomeScreen = () => {
             {/* Action buttons: Reset, Play/Pause, Skip */}
             <ActionButtons
                 timerIsRunning={timerIsRunning}
+                disabledRest={!timerMoved}
                 onPressReset={() => dispatch(reset())}
                 onPressPlayPause={() =>
                     timerIsRunning
                         ? dispatch(pause())
                         : dispatch(start())
                 }
+                disabledSkip={!timerIsRunning}
                 onPressSkip={() => dispatch(moveToNextSession())}
             />
 
             {/* Focus indicator */}
             <FocusIndicator focusCount={focusCount} />
+
+            {/* Conform change mode modal */}
+            <ConfirmChangeModeModal
+                visible={confirmChangeModeModalVisible}
+                onConfirm={onConformChangeMode}
+                onCancel={onCancelChangeMode}
+            />
 
             {/* Timer completed modal */}
             <TimerCompletedModal
