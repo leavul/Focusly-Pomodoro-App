@@ -4,6 +4,7 @@ import AppText from '../../ui/AppText'
 import { Mode } from '../../../types/pomodoro'
 import { colors, radius, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
+import AppButton from '../../ui/AppButton';
 
 type ModeSwitcherProps = {
     currentMode: Mode;
@@ -23,15 +24,17 @@ const ModeSwitcher = ({ currentMode, focusCount, onChange }: ModeSwitcherProps) 
             {/* Render Pomodoro modes */}
             {
                 AVAILABLE_MODES.map(({ key, label }) => (
-                    <Pressable
+                    <AppButton
                         key={key}
                         style={[styles.modeButton, currentMode === key && styles.active]}
+                        disabled={currentMode === key}
+                        reduceOpacityWhenDisabled={false}
                         onPress={() => onChange(key)}
                     >
                         <AppText>
                             {key === 'focus' ? `${label} (${focusCount})` : label}
                         </AppText>
-                    </Pressable>
+                    </AppButton>
                 ))
             }
         </View>
