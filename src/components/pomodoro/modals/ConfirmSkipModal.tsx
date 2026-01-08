@@ -1,25 +1,26 @@
 import AppModal from '../../ui/AppModal'
 import PomodoroModalButton from './shared/PomodoroModalButton'
 
-type ConfirmChangeModeModalProps = {
+type ConfirmSkipModalProps = {
     visible: boolean
     onConfirm: () => void
     onCancel: () => void
 }
 
-const ConfirmChangeModeModal = ({
+const ConfirmSkipModal = ({
     visible,
     onConfirm,
     onCancel,
-}: ConfirmChangeModeModalProps) => {
+}: ConfirmSkipModalProps) => {
     return (
         <AppModal
             visible={visible}
-            title="Change The Mode?"
-            subtitle="The current session progress will be discarded if you change mode"
+            title="Skip The Session?"
+            subtitle="The current session will mark as completed if you skip"
         >
+
             <PomodoroModalButton
-                confirmLabel='Change'
+                confirmLabel='Skip'
                 onConfirm={onConfirm}
                 onCancel={onCancel}
             />
@@ -27,4 +28,4 @@ const ConfirmChangeModeModal = ({
     )
 }
 
-export default ConfirmChangeModeModal
+export default ConfirmSkipModal

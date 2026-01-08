@@ -11,7 +11,6 @@ type ActionButtonsProps = {
     disabledRest: boolean
     onPressReset: () => void
     onPressPlayPause: () => void
-    disabledSkip: boolean
     onPressSkip: () => void
 }
 
@@ -20,7 +19,6 @@ const ActionButtons = ({
     disabledRest,
     onPressReset,
     onPressPlayPause,
-    disabledSkip,
     onPressSkip
 }: ActionButtonsProps) => {
     return (
@@ -51,7 +49,6 @@ const ActionButtons = ({
             {/* Skip button */}
             <AppButton
                 style={styles.sideButton}
-                disabled={disabledSkip}
                 onPress={onPressSkip}
             >
                 <SkipIcon

@@ -7,7 +7,9 @@ import {
     ActionButtons,
     FocusIndicator,
     ConfirmChangeModeModal,
-    TimerCompletedModal
+    TimerCompletedModal,
+    ConfirmRestModal,
+    ConfirmSkipModal
 } from '../components/pomodoro'
 import { RootState } from '../store';
 import {
@@ -37,6 +39,9 @@ const HomeScreen = () => {
     const [confirmChangeModeModalVisible, setConfirmChangeModeModalVisible] = useState(false)
     const [modeToChange, setModeToChange] = useState<null | Mode>(null)
 
+    const [confirmRestModalVisible, setConfirmRestModalVisible] = useState(false)
+    const [confirmSkipModalVisible, setConfirmSkipModalVisible] = useState(false)
+
     const { playSound } = useAlertSound()
 
     useEffect(() => {
@@ -54,9 +59,12 @@ const HomeScreen = () => {
         }
     }, [timerStatus])
 
-    
+
     const requestModeChange = (newMode: Mode) => {
         if (newMode === currentMode) return
+
+        dispatch(pause())
+
         if (timerMoved) {
             setModeToChange(newMode)
             setConfirmChangeModeModalVisible(true)
@@ -64,29 +72,55 @@ const HomeScreen = () => {
             dispatch(changeMode(newMode))
         }
     }
-    
-    const onConformChangeMode = () => {
+
+    const onConfirmChangeMode = () => {
         if (modeToChange) {
             dispatch(changeMode(modeToChange))
             setModeToChange(null)
         }
         setConfirmChangeModeModalVisible(false)
     }
-    
+
     const onCancelChangeMode = () => {
         setModeToChange(null)
         setConfirmChangeModeModalVisible(false)
     }
-    
-    const onCloseEndSessionModal = () => {
+
+    const handelPlayPause = () => {
+        timerIsRunning
+            ? dispatch(pause())
+            : dispatch(start())
+    }
+
+    const requestRest = () => {
+        dispatch(pause())
+        setConfirmRestModalVisible(true)
+    }
+
+    const onConfirmRest = () => {
+        setConfirmRestModalVisible(false)
+        dispatch(reset())
+    }
+
+    const requestSkip = () => {
+        dispatch(pause())
+        setConfirmSkipModalVisible(true)
+    }
+
+    const onConfirmSkip = () => {
+        setConfirmSkipModalVisible(false)
+        dispatch(moveToNextSession())
+    }
+
+    const onCloseTimerCompletedModal = () => {
         setTimerCompletedModalVisible(false)
         dispatch(moveToNextSession())
     }
-    
+
     const formattedTime = formatTime(remaining);
     const timerIsRunning = timerStatus === 'running'
     const timerMoved = remaining !== MODE_DURATION[currentMode]
-    
+
     return (
         <View style={styles.container}>
             {/* Switch mode section */}
@@ -106,30 +140,39 @@ const HomeScreen = () => {
             <ActionButtons
                 timerIsRunning={timerIsRunning}
                 disabledRest={!timerMoved}
-                onPressReset={() => dispatch(reset())}
-                onPressPlayPause={() =>
-                    timerIsRunning
-                        ? dispatch(pause())
-                        : dispatch(start())
-                }
-                disabledSkip={!timerIsRunning}
-                onPressSkip={() => dispatch(moveToNextSession())}
+                onPressReset={requestRest}
+                onPressPlayPause={handelPlayPause}
+                onPressSkip={requestSkip}
             />
 
             {/* Focus indicator */}
             <FocusIndicator focusCount={focusCount} />
 
-            {/* Conform change mode modal */}
-            <ConfirmChangeModeModal
-                visible={confirmChangeModeModalVisible}
-                onConfirm={onConformChangeMode}
-                onCancel={onCancelChangeMode}
-            />
-
             {/* Timer completed modal */}
             <TimerCompletedModal
                 visible={timerCompletedModalVisible}
-                onClose={() => onCloseEndSessionModal()}
+                onClose={() => onCloseTimerCompletedModal()}
+            />
+
+            {/* Conform change mode modal */}
+            <ConfirmChangeModeModal
+                visible={confirmChangeModeModalVisible}
+                onConfirm={onConfirmChangeMode}
+                onCancel={onCancelChangeMode}
+            />
+
+            {/* Conform rest modal */}
+            <ConfirmRestModal
+                visible={confirmRestModalVisible}
+                onConfirm={onConfirmRest}
+                onCancel={() => setConfirmRestModalVisible(false)}
+            />
+
+            {/* Conform skip modal */}
+            <ConfirmSkipModal
+                visible={confirmSkipModalVisible}
+                onConfirm={onConfirmSkip}
+                onCancel={() => setConfirmSkipModalVisible(false)}
             />
         </View>
     )

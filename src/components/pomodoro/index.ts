@@ -3,8 +3,10 @@ import TimerDisplay from './ui/TimerDisplay'
 import TimerStatusIndicator from './ui/TimerStatusIndicator'
 import ActionButtons from "./ui/ActionButtons"
 import FocusIndicator from './ui/FocusIndicator';
-import ConfirmChangeModeModal from './modals/ConfirmChangeModeModal';
 import TimerCompletedModal from './modals/TimerCompletedModal';
+import ConfirmChangeModeModal from './modals/ConfirmChangeModeModal';
+import ConfirmRestModal from './modals/ConfirmRestModal';
+import ConfirmSkipModal from './modals/ConfirmSkipModal';
 
 export {
     ModeSwitcher,
@@ -12,6 +14,8 @@ export {
     TimerStatusIndicator,
     ActionButtons,
     FocusIndicator,
+    TimerCompletedModal,
     ConfirmChangeModeModal,
-    TimerCompletedModal
+    ConfirmRestModal,
+    ConfirmSkipModal
 };

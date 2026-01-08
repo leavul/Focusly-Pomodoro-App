@@ -16,13 +16,14 @@ const TimerCompletedModal = ({
   return (
     <AppModal
       visible={visible}
-      title="Timer Completed"
+      title="Time's Up!"
+      subtitle='Your session has finished'
     >
       <AppButton
         backgroundColor={colors.primary}
         onPress={onClose}
       >
-        <AppText>Continue</AppText>
+        <AppText>Okay</AppText>
       </AppButton>
     </AppModal>
   )

@@ -1,25 +1,26 @@
 import AppModal from '../../ui/AppModal'
 import PomodoroModalButton from './shared/PomodoroModalButton'
 
-type ConfirmChangeModeModalProps = {
+type ConfirmRestModalProps = {
     visible: boolean
     onConfirm: () => void
     onCancel: () => void
 }
 
-const ConfirmChangeModeModal = ({
+const ConfirmRestModal = ({
     visible,
     onConfirm,
     onCancel,
-}: ConfirmChangeModeModalProps) => {
+}: ConfirmRestModalProps) => {
     return (
         <AppModal
             visible={visible}
-            title="Change The Mode?"
-            subtitle="The current session progress will be discarded if you change mode"
+            title="Reset The Timer?"
+            subtitle="The current session will be reset to its original time if you reset"
         >
+
             <PomodoroModalButton
-                confirmLabel='Change'
+                confirmLabel='Rest'
                 onConfirm={onConfirm}
                 onCancel={onCancel}
             />
@@ -27,4 +28,4 @@ const ConfirmChangeModeModal = ({
     )
 }
 
-export default ConfirmChangeModeModal
+export default ConfirmRestModal
