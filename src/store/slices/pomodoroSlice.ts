@@ -2,120 +2,99 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Mode, MODE_DURATION } from "../../types/pomodoro";
 
 type PomodoroState = {
-    mode: Mode
+    sessionMode: Mode
     timerStatus: 'paused' | 'running' | 'completed'
-    remaining: number
+    remainingTime: number
     endTime: number | null
     focusCount: number
 }
 
 const initialState: PomodoroState = {
-    mode: 'focus',
+    sessionMode: 'focus',
     timerStatus: 'paused',
-    remaining: MODE_DURATION['focus'],
+    remainingTime: MODE_DURATION['focus'],
     endTime: null,
     focusCount: 0,
-}
-
-type NextSessionType = {
-    mode: Mode
-    remaining: number
-    focusCount: number
-}
-
-function nextSession(state: PomodoroState): NextSessionType {
-    if (state.mode === 'focus') {
-        const completed = state.focusCount + 1
-        const nextMode = completed % 4 === 0 ? 'longBreak' : 'shortBreak'
-        return {
-            mode: nextMode,
-            remaining: MODE_DURATION[nextMode],
-            focusCount: completed
-        }
-    }
-
-    return {
-        ...state,
-        mode: 'focus',
-        remaining: MODE_DURATION['focus']
-    }
-}
-
-function applyNextSession(state: PomodoroState) {
-    const next = nextSession(state)
-
-    state.mode = next.mode
-    state.timerStatus = 'paused'
-    state.remaining = next.remaining
-    state.focusCount = next.focusCount
-    state.endTime = null
 }
 
 const pomodoroSlice = createSlice({
     name: 'pomodoro',
     initialState,
     reducers: {
-        changeMode(state, action: PayloadAction<Mode>) {
-            if (state.mode === action.payload) return
+        changeSessionMode(state, action: PayloadAction<Mode>) {
+            if (state.sessionMode === action.payload) return
 
-            state.mode = action.payload
-            state.remaining = MODE_DURATION[action.payload]
+            state.sessionMode = action.payload
+            state.remainingTime = MODE_DURATION[action.payload]
             state.timerStatus = 'paused'
             state.endTime = null
         },
 
-        start(state) {
+        startTimer(state) {
             if (state.timerStatus === 'running') return
 
             state.timerStatus = 'running'
-            state.endTime = Date.now() + (state.remaining * 1000)
+            state.endTime = Date.now() + (state.remainingTime * 1000)
         },
 
-        pause(state) {
+        pauseTimer(state) {
             if (state.timerStatus === 'paused') return
 
             state.timerStatus = 'paused'
             state.endTime = null
         },
 
-        tick(state) {
-            if (state.timerStatus === 'paused' || state.endTime === null) return
+        tickTimer(state) {
+            if (state.timerStatus !== 'running' || state.endTime === null) return
 
             const newRemaining = Math.ceil((state.endTime - Date.now()) / 1000)
             if (newRemaining <= 0) {
-                pomodoroSlice.caseReducers.finish(state)
+                pomodoroSlice.caseReducers.finishTimer(state)
             }
             else {
-                state.remaining = newRemaining
+                state.remainingTime = newRemaining
             }
 
         },
 
-        finish(state) {
+        finishTimer(state) {
             state.timerStatus = 'completed'
         },
 
-        reset(state) {
-            if (state.remaining === MODE_DURATION[state.mode]) return
+        resetTimer(state) {
+            if (state.remainingTime === MODE_DURATION[state.sessionMode]) return
 
-            state.remaining = MODE_DURATION[state.mode]
+            state.remainingTime = MODE_DURATION[state.sessionMode]
             state.timerStatus = 'paused'
             state.endTime = null
         },
 
-        moveToNextSession(state) {
-            applyNextSession(state)
-        },
+        moveToNextSessionMode(state) {
+            if (state.sessionMode === 'focus') {
+                const completedFocusCount = state.focusCount + 1
+                const nextMode = completedFocusCount % 4 === 0 ? 'longBreak' : 'shortBreak'
+
+                state.sessionMode = nextMode
+                state.remainingTime = MODE_DURATION[nextMode]
+                state.focusCount = completedFocusCount
+            } else {
+                state.sessionMode = 'focus'
+                state.remainingTime = MODE_DURATION['focus']
+            }
+
+            state.timerStatus = 'paused'
+            state.endTime = null
+        }
     }
 });
 
 export const {
-    changeMode,
-    start,
-    pause,
-    tick,
-    reset,
-    moveToNextSession,
+    changeSessionMode,
+    startTimer,
+    pauseTimer,
+    tickTimer,
+    resetTimer,
+    moveToNextSessionMode,
 } = pomodoroSlice.actions
 
 export default pomodoroSlice.reducer

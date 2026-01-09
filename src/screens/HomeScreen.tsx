@@ -3,35 +3,34 @@ import { useEffect, useState } from 'react'
 import {
     ModeSwitcher,
     TimerDisplay,
-    TimerStatusIndicator,
     ActionButtons,
     FocusIndicator,
     ConfirmChangeModeModal,
     TimerCompletedModal,
-    ConfirmRestModal,
-    ConfirmSkipModal
+    ConfirmRestSessionModal,
+    ConfirmSkipSessionModal
 } from '../components/pomodoro'
 import { RootState } from '../store';
 import {
-    changeMode,
-    start,
-    pause,
-    tick,
-    reset,
-    moveToNextSession,
+    changeSessionMode,
+    startTimer,
+    pauseTimer,
+    tickTimer,
+    resetTimer,
+    moveToNextSessionMode,
 } from '../store/slices/pomodoroSlice';
 import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
 import { useAlertSound } from '../hooks';
 import { Mode, MODE_DURATION } from '../types/pomodoro';
-import { useKeepAwake } from 'expo-keep-awake';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 const HomeScreen = () => {
     const dispatch = useDispatch()
     const {
         timerStatus,
-        mode: currentMode,
-        remaining,
+        sessionMode: currentSessionMode,
+        remainingTime,
         focusCount
     } = useSelector((state: RootState) => state.pomodoro)
 
@@ -40,43 +39,51 @@ const HomeScreen = () => {
     const [confirmChangeModeModalVisible, setConfirmChangeModeModalVisible] = useState(false)
     const [modeToChange, setModeToChange] = useState<null | Mode>(null)
 
-    const [confirmRestModalVisible, setConfirmRestModalVisible] = useState(false)
-    const [confirmSkipModalVisible, setConfirmSkipModalVisible] = useState(false)
+    const [confirmRestModalVisible, setConfirmRestSessionModalVisible] = useState(false)
+    const [confirmSkipModalVisible, setConfirmSkipSessionModalVisible] = useState(false)
 
     const { playSound } = useAlertSound()
 
     useEffect(() => {
         if (timerStatus === 'running') {
+            activateKeepAwakeAsync();
+
             const interval = setInterval(() => {
-                dispatch(tick())
+                dispatch(tickTimer())
             }, 1000)
 
             return () => clearInterval(interval)
         }
 
         if (timerStatus === 'completed') {
+            deactivateKeepAwake();
+
             playSound()
             setTimerCompletedModalVisible(true)
+        }
+
+        if (timerStatus === 'paused') {
+            deactivateKeepAwake();
         }
     }, [timerStatus])
 
 
     const requestModeChange = (newMode: Mode) => {
-        if (newMode === currentMode) return
+        if (newMode === currentSessionMode) return
 
-        dispatch(pause())
+        // dispatch(pause())
 
         if (timerMoved) {
             setModeToChange(newMode)
             setConfirmChangeModeModalVisible(true)
         } else {
-            dispatch(changeMode(newMode))
+            dispatch(changeSessionMode(newMode))
         }
     }
 
     const onConfirmChangeMode = () => {
         if (modeToChange) {
-            dispatch(changeMode(modeToChange))
+            dispatch(changeSessionMode(modeToChange))
             setModeToChange(null)
         }
         setConfirmChangeModeModalVisible(false)
@@ -89,73 +96,65 @@ const HomeScreen = () => {
 
     const handelPlayPause = () => {
         timerIsRunning
-            ? dispatch(pause())
-            : dispatch(start())
+            ? dispatch(pauseTimer())
+            : dispatch(startTimer())
     }
 
-    const requestRest = () => {
-        dispatch(pause())
-        setConfirmRestModalVisible(true)
+    const requestRestSession = () => {
+        // dispatch(pause())
+        setConfirmRestSessionModalVisible(true)
     }
 
-    const onConfirmRest = () => {
-        setConfirmRestModalVisible(false)
-        dispatch(reset())
+    const onConfirmRestSession = () => {
+        setConfirmRestSessionModalVisible(false)
+        dispatch(resetTimer())
     }
 
-    const requestSkip = () => {
-        dispatch(pause())
-        setConfirmSkipModalVisible(true)
+    const requestSkipSession = () => {
+        // dispatch(pause())
+        setConfirmSkipSessionModalVisible(true)
     }
 
-    const onConfirmSkip = () => {
-        setConfirmSkipModalVisible(false)
-        dispatch(moveToNextSession())
+    const onConfirmSkipSession = () => {
+        setConfirmSkipSessionModalVisible(false)
+        dispatch(moveToNextSessionMode())
     }
 
     const onCloseTimerCompletedModal = () => {
         setTimerCompletedModalVisible(false)
-        dispatch(moveToNextSession())
+        dispatch(moveToNextSessionMode())
     }
 
-      useKeepAwake();
-
-    const formattedTime = formatTime(remaining);
+    const formattedRemainingTime = formatTime(remainingTime);
     const timerIsRunning = timerStatus === 'running'
-    const timerMoved = remaining !== MODE_DURATION[currentMode]
+    const timerMoved = remainingTime !== MODE_DURATION[currentSessionMode]
 
     return (
         <View style={styles.container}>
             {/* Switch mode section */}
             <ModeSwitcher
-                currentMode={currentMode}
+                currentMode={currentSessionMode}
                 focusCount={focusCount}
                 onChange={requestModeChange}
             />
 
             {/* Timer display */}
-            <TimerDisplay time={formattedTime} />
-
-            {/* Timer status indicator */}
-            <TimerStatusIndicator timerIsRunning={timerIsRunning} />
+            <TimerDisplay
+                remainingTime={formattedRemainingTime}
+                timerIsRunning={timerIsRunning}
+            />
 
             {/* Action buttons: Reset, Play/Pause, Skip */}
             <ActionButtons
                 timerIsRunning={timerIsRunning}
                 disabledRest={!timerMoved}
-                onPressReset={requestRest}
+                onPressReset={requestRestSession}
                 onPressPlayPause={handelPlayPause}
-                onPressSkip={requestSkip}
+                onPressSkip={requestSkipSession}
             />
 
             {/* Focus indicator */}
             <FocusIndicator focusCount={focusCount} />
-
-            {/* Timer completed modal */}
-            <TimerCompletedModal
-                visible={timerCompletedModalVisible}
-                onClose={() => onCloseTimerCompletedModal()}
-            />
 
             {/* Conform change mode modal */}
             <ConfirmChangeModeModal
@@ -165,17 +164,23 @@ const HomeScreen = () => {
             />
 
             {/* Conform rest modal */}
-            <ConfirmRestModal
+            <ConfirmRestSessionModal
                 visible={confirmRestModalVisible}
-                onConfirm={onConfirmRest}
-                onCancel={() => setConfirmRestModalVisible(false)}
+                onConfirm={onConfirmRestSession}
+                onCancel={() => setConfirmRestSessionModalVisible(false)}
             />
 
             {/* Conform skip modal */}
-            <ConfirmSkipModal
+            <ConfirmSkipSessionModal
                 visible={confirmSkipModalVisible}
-                onConfirm={onConfirmSkip}
-                onCancel={() => setConfirmSkipModalVisible(false)}
+                onConfirm={onConfirmSkipSession}
+                onCancel={() => setConfirmSkipSessionModalVisible(false)}
+            />
+
+            {/* Timer completed modal */}
+            <TimerCompletedModal
+                visible={timerCompletedModalVisible}
+                onClose={() => onCloseTimerCompletedModal()}
             />
         </View>
     )

@@ -57,6 +57,12 @@ const config: ExpoConfig = {
         ],
     ],
 
+    extra: {
+        eas: {
+            projectId: "c14ccdd2-c39b-4734-a7ce-2fe46bdd051d"
+        }
+    },
+
     owner: 'leavul',
 };
 

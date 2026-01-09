@@ -1,26 +1,26 @@
 import AppModal from '../../ui/AppModal'
 import PomodoroModalButton from './shared/PomodoroModalButton'
 
-type ConfirmSkipModalProps = {
+type ConfirmRestModalProps = {
     visible: boolean
     onConfirm: () => void
     onCancel: () => void
 }
 
-const ConfirmSkipModal = ({
+const ConfirmRestSessionModal = ({
     visible,
     onConfirm,
     onCancel,
-}: ConfirmSkipModalProps) => {
+}: ConfirmRestModalProps) => {
     return (
         <AppModal
             visible={visible}
-            title="Skip The Session?"
-            subtitle="The current session will mark as completed if you press skip"
+            title="Reset The Timer?"
+            subtitle="The current session will be reset to its original time if you press reset"
         >
 
             <PomodoroModalButton
-                confirmLabel='Skip'
+                confirmLabel='Rest'
                 onConfirm={onConfirm}
                 onCancel={onCancel}
             />
@@ -28,4 +28,4 @@ const ConfirmSkipModal = ({
     )
 }
 
-export default ConfirmSkipModal
+export default ConfirmRestSessionModal
