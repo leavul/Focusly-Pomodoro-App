@@ -1,10 +1,11 @@
-import { Pressable, StyleSheet, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import React, { ReactNode } from 'react'
 import AppText from '../../ui/AppText'
 import { Mode } from '../../../types/pomodoro'
 import { colors, radius, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
 import AppButton from '../../ui/AppButton';
+import { FocusIcon, LongBreakIcon, ShortBreakIcon } from '../../svg';
 
 type ModeSwitcherProps = {
     currentMode: Mode;
@@ -12,18 +13,17 @@ type ModeSwitcherProps = {
     onChange: (mode: Mode) => void;
 };
 
-const AVAILABLE_MODES: { key: Mode; label: string }[] = [
-    { key: 'focus', label: 'Focus' },
-    { key: 'shortBreak', label: 'Short Break' },
-    { key: 'longBreak', label: 'Long Break' },
+const AVAILABLE_MODES: { key: Mode; label: string, icon: ReactNode }[] = [
+    { key: 'focus', label: 'Focus', icon: <FocusIcon size={22} /> },
+    { key: 'shortBreak', label: 'Short Break', icon: <ShortBreakIcon size={22} /> },
+    { key: 'longBreak', label: 'Long Break', icon: <LongBreakIcon size={22} /> },
 ];
 
 const ModeSwitcher = ({ currentMode, focusCount, onChange }: ModeSwitcherProps) => {
     return (
         <View style={styles.container}>
-            {/* Render Pomodoro modes */}
             {
-                AVAILABLE_MODES.map(({ key, label }) => (
+                AVAILABLE_MODES.map(({ key, label, icon }) => (
                     <AppButton
                         key={key}
                         style={[styles.modeButton, currentMode === key && styles.active]}
@@ -31,6 +31,9 @@ const ModeSwitcher = ({ currentMode, focusCount, onChange }: ModeSwitcherProps) 
                         reduceOpacityWhenDisabled={false}
                         onPress={() => onChange(key)}
                     >
+                        <View style={styles.icon}>
+                            {icon}
+                        </View>
                         <AppText>
                             {key === 'focus' ? `${label} (${focusCount})` : label}
                         </AppText>
@@ -60,4 +63,7 @@ const styles = StyleSheet.create({
     active: {
         backgroundColor: colors.primary,
     },
+    icon: {
+        marginBottom: vs(2)
+    }
 })

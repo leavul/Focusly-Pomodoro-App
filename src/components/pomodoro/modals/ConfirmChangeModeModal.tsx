@@ -1,5 +1,5 @@
 import AppModal from '../../ui/AppModal'
-import PomodoroModalButton from './shared/PomodoroModalButton'
+import PomodoroModalButtons from './shared/PomodoroModalButtons'
 
 type ConfirmChangeModeModalProps = {
     visible: boolean
@@ -18,7 +18,7 @@ const ConfirmChangeModeModal = ({
             title="Change The Mode?"
             subtitle="The current session progress will be discarded if you press change"
         >
-            <PomodoroModalButton
+            <PomodoroModalButtons
                 confirmLabel='Change'
                 onConfirm={onConfirm}
                 onCancel={onCancel}

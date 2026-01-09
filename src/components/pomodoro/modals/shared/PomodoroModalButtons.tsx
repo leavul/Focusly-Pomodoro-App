@@ -11,7 +11,7 @@ type PomodoroModalButtonProps = {
     onConfirm: () => void
     onCancel: () => void
 }
-const PomodoroModalButton = ({ confirmLabel = 'Confirm', onConfirm, onCancel }: PomodoroModalButtonProps) => {
+const PomodoroModalButtons = ({ confirmLabel = 'Confirm', onConfirm, onCancel }: PomodoroModalButtonProps) => {
     return (
         <View style={styles.container}>
             <AppButton
@@ -30,7 +30,7 @@ const PomodoroModalButton = ({ confirmLabel = 'Confirm', onConfirm, onCancel }: 
     )
 }
 
-export default PomodoroModalButton
+export default PomodoroModalButtons
 
 const styles = StyleSheet.create({
     container: {

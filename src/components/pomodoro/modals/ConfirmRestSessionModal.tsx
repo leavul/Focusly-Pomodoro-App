@@ -1,5 +1,5 @@
 import AppModal from '../../ui/AppModal'
-import PomodoroModalButton from './shared/PomodoroModalButton'
+import PomodoroModalButtons from './shared/PomodoroModalButtons'
 
 type ConfirmRestModalProps = {
     visible: boolean
@@ -19,7 +19,7 @@ const ConfirmRestSessionModal = ({
             subtitle="The current session will be reset to its original time if you press reset"
         >
 
-            <PomodoroModalButton
+            <PomodoroModalButtons
                 confirmLabel='Rest'
                 onConfirm={onConfirm}
                 onCancel={onCancel}

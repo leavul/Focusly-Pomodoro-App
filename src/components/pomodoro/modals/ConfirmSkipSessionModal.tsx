@@ -1,5 +1,5 @@
 import AppModal from '../../ui/AppModal'
-import PomodoroModalButton from './shared/PomodoroModalButton'
+import PomodoroModalButtons from './shared/PomodoroModalButtons'
 
 type ConfirmSkipModalProps = {
     visible: boolean
@@ -19,7 +19,7 @@ const ConfirmSkipSessionModal = ({
             subtitle="The current session will mark as completed if you press skip"
         >
 
-            <PomodoroModalButton
+            <PomodoroModalButtons
                 confirmLabel='Skip'
                 onConfirm={onConfirm}
                 onCancel={onCancel}
