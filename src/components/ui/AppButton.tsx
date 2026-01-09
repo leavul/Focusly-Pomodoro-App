@@ -1,7 +1,6 @@
 import { StyleSheet, TouchableOpacity, TouchableOpacityProps } from 'react-native'
 import { s } from 'react-native-size-matters'
-import { colors, radius } from '../../theme'
-import { layouts } from '../../constants/'
+import { colors, layouts, radius } from '../../theme'
 
 type AppButtonType = TouchableOpacityProps & {
     padding?: number

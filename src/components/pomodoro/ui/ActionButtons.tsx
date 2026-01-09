@@ -35,7 +35,6 @@ const ActionButtons = ({
             {/* Play/Pause button */}
             <AppButton
                 padding={34}
-                enableBorderWidth={false}
                 backgroundColor={colors.primary}
                 onPress={onPressPlayPause}
             >

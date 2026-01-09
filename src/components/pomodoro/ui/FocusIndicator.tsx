@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors, spacing } from '../../../theme';
+import { colors, layouts, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
-import { layouts } from '../../../constants/'
 
 type FocusIndicatorProps = {
   focusCount: number
