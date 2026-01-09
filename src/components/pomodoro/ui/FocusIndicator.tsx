@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colors, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
+import { layouts } from '../../../constants/'
 
 type FocusIndicatorProps = {
   focusCount: number
@@ -34,14 +35,15 @@ const styles = StyleSheet.create({
     gap: s(spacing.sm),
   },
   dot: {
-    width: s(50),
-    height: s(25),
-    borderRadius: s(25),
-    borderWidth: s(1),
+    width: s(spacing.xl),
+    height: s(spacing.md),
+    borderRadius: s(spacing.md),
+    borderWidth: layouts.borderWidth,
     borderColor: colors.muted,
   },
   activeDot: {
     backgroundColor: colors.primary,
+    borderColor: colors.primary,
   },
 });
 

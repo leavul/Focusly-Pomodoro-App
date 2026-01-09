@@ -16,7 +16,7 @@ const ConfirmSkipModal = ({
         <AppModal
             visible={visible}
             title="Skip The Session?"
-            subtitle="The current session will mark as completed if you skip"
+            subtitle="The current session will mark as completed if you press skip"
         >
 
             <PomodoroModalButton

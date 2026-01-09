@@ -16,7 +16,7 @@ const ConfirmChangeModeModal = ({
         <AppModal
             visible={visible}
             title="Change The Mode?"
-            subtitle="The current session progress will be discarded if you change mode"
+            subtitle="The current session progress will be discarded if you press change"
         >
             <PomodoroModalButton
                 confirmLabel='Change'

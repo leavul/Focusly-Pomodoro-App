@@ -16,7 +16,7 @@ const ConfirmRestModal = ({
         <AppModal
             visible={visible}
             title="Reset The Timer?"
-            subtitle="The current session will be reset to its original time if you reset"
+            subtitle="The current session will be reset to its original time if you press reset"
         >
 
             <PomodoroModalButton

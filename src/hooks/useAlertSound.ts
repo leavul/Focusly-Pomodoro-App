@@ -1,8 +1,10 @@
 import { useAudioPlayer } from 'expo-audio';
 import { useRef } from 'react';
+import { sounds } from '../constants';
+
 
 export function useAlertSound() {
-    const playerRef = useRef(useAudioPlayer(require('../assets/sounds/alert.mp3'), { downloadFirst: true }));
+    const playerRef = useRef(useAudioPlayer(sounds.alert, { downloadFirst: true }));
 
     const playSound = () => {
         const player = playerRef.current;

@@ -24,6 +24,7 @@ import { View, StyleSheet } from 'react-native'
 import { formatTime } from '../utils';
 import { useAlertSound } from '../hooks';
 import { Mode, MODE_DURATION } from '../types/pomodoro';
+import { useKeepAwake } from 'expo-keep-awake';
 
 const HomeScreen = () => {
     const dispatch = useDispatch()
@@ -116,6 +117,8 @@ const HomeScreen = () => {
         setTimerCompletedModalVisible(false)
         dispatch(moveToNextSession())
     }
+
+      useKeepAwake();
 
     const formattedTime = formatTime(remaining);
     const timerIsRunning = timerStatus === 'running'
