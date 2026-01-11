@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors, layouts, spacing } from '../../../theme';
+import { colors, layouts, radius, spacing } from '../../../theme';
 import { s, vs } from 'react-native-size-matters';
 
 type FocusIndicatorProps = {
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
     gap: s(spacing.sm),
   },
   dot: {
-    width: s(spacing.xl),
-    height: s(spacing.md),
-    borderRadius: s(spacing.md),
+    width: s(40),
+    height: s(20),
+    borderRadius: s(radius.regular),
     borderWidth: layouts.borderWidth,
     borderColor: colors.muted,
   },
