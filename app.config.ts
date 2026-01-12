@@ -32,7 +32,7 @@ const config: ExpoConfig = {
         },
         edgeToEdgeEnabled: true,
         predictiveBackGestureEnabled: false,
-        package: 'com.albaraadighriri.focuslyapp',
+        package:'com.albaraadighriri.focuslyapp',
     },
 
     web: {
@@ -42,6 +42,7 @@ const config: ExpoConfig = {
     plugins: [
         'expo-font',
         'expo-audio',
+        "expo-asset",
         [
             'expo-splash-screen',
             {
