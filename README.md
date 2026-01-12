@@ -27,12 +27,12 @@ A simple Pomodoro timer mobile application built with React Native and Expo. Foc
 
 ## 📸 Screenshots
 <p align="center">
-  <img width="250" alt="Focusly Screenshot 1" src="" />
-  <img width="250" alt="Focusly Screenshot 2" src="" />
-  <img width="250" alt="Focusly Screenshot 3" src="" />
-  <img width="250" alt="Focusly Screenshot 4" src="" />
-  <img width="250" alt="Focusly Screenshot 5" src="" />
-  <img width="250" alt="Focusly Screenshot 6" src="" />
+  <img width="250" alt="Focusly Screenshot 1" src="https://github.com/user-attachments/assets/f5b81e3a-c61a-4417-bda2-8017d956f298" />
+  <img width="250" alt="Focusly Screenshot 2" src="https://github.com/user-attachments/assets/5cdd7331-e0de-43e8-8753-5b464c8b4b15" />
+  <img width="250" alt="Focusly Screenshot 3" src="https://github.com/user-attachments/assets/95286522-c6c9-4116-91f6-3cd728f43a2c" />
+  <img width="250" alt="Focusly Screenshot 4" src="https://github.com/user-attachments/assets/34591a86-bf21-44b0-a76d-867167f5f283" />
+  <img width="250" alt="Focusly Screenshot 5" src="https://github.com/user-attachments/assets/0ad58cfb-30b3-427b-a8fa-53b26372958e" />
+  <img width="250" alt="Focusly Screenshot 6" src="https://github.com/user-attachments/assets/21e91b6b-9a43-4961-86f0-f50b12c98584" />
 </p>
 
 ## 📚 What I Learned
